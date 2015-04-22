@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://getbootstrap.com/examples/signin/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="img/favicon.ico">
+<title>Asset Change</title>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<!-- Bootstrap core CSS -->
+<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/signin.css" rel="stylesheet">
+
+<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    </head>
+
+    <body>
+      <% include nav %>
+      <div class = "container">
+        <h1>Asset Change</h1>
+        <form class="form-search">
+
+          <input type="text" class="input-medium search-query">
+          <button type="submit" class="btn btn-lg btn-primary">Search</button>
+        </form>
+        <!--input id="input-1" type="file" class="file"-->
+        <div class="table-responsive">
+          <table class="table table-condensed table-striped table-bordered table-hover no-margin">
+            <thead>
+              <tr>
+                <th style="width:5%">
+                  <input class="no-margin" type="checkbox">
+                </th>
+                <th style="width:5%" class="hidden-phone">Id</th>
+                <th style="width:10%" class="hidden-phone">AssetId</th>
+                <th style="width:15%" class="hidden-phone">Type</th>
+                <th style="width:10%" class="hidden-phone">Source User</th>
+                <th style="width:15%" class="hidden-phone">Dest User</th>
+                <th style="width:15%" class="hidden-phone">Transfer DataTime</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% allChangeInfo.forEach(function(changeInfo) { %>
+              <tr>
+               <td>
+                 <input class="no-margin" type="checkbox">
+               </td>
+               <td id="id"><%= changeInfo.id %></td>
+               <td id="AssetId"><%= changeInfo.AssetId %></td>
+               <td class="hidden-phone" id="Type"><%= changeInfo.Type %></td>
+               <td class="hidden-phone" id="source"><%= changeInfo.source %></td>
+               <td class="hidden-phone" id="dest"><%= changeInfo.dest %></td>
+               <td class="hidden-phone" id="datetime"><%= changeInfo.datetime.toISOString() %></td>
+               </tr>
+               <% }); %>
+             </tbody>
+           </table>
+         </div>
+<!-- <div class="form-actions">
+<button class="btn btn-lg btn-primary" type="submit"   >Add</button>
+<button class="btn btn-lg btn-primary" type="submit"   >Delete</button>
+</div> -->
+
+
+</body>
