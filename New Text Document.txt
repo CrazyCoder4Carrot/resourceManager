@@ -1,5 +1,5 @@
 1.paging
-2.typo dropdown
+2.uploading
 3.transfer
 4.search
 5.report

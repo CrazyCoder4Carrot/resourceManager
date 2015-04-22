@@ -90,7 +90,10 @@
       <input type="text" class="input-medium search-query">
       <button type="submit" class="btn btn-lg btn-primary">Search</button>
     </form>
-    <input id="input-1" type="file" class="file">
+    <form method="post" enctype="multipart/form-data" action="/order/file-upload">
+  <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
+  <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
+</form>
     <div class="table-responsive">
       <table class="table table-condensed table-striped table-bordered table-hover no-margin">
         <thead>
