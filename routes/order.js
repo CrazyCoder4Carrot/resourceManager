@@ -4,8 +4,12 @@ var moment = require('moment');
 var fs = require('fs');
 var formidable = require("formidable");
 var router = express.Router();
-var AVATAR_UPLOAD_FOLDER = '/avatar/';
+var AVATAR_UPLOAD_FOLDER = '/uploaded/';
 var TITLE = 'formidable上传示例';
+var path = require('path');
+var fs = require('fs');
+var excelParser = require('excel-parser');
+var xlsx = require('node-xlsx');
 /* GET users listing. */
 router.get('/', function(req, res, next)
 {
@@ -131,66 +135,71 @@ router.post('/update', function(req, res, next)
 
 });
 
+function mkdir(dirpath, dirname)
+{
+    //判断是否是第一次调用  
+    if (typeof dirname === "undefined")
+    {
+        if (fs.existsSync(dirpath))
+        {
+            return;
+        }
+        else
+        {
+            mkdir(dirpath, path.dirname(dirpath));
+        }
+    }
+    else
+    {
+        //判断第二个参数是否正常，避免调用时传入错误参数  
+        if (dirname !== path.dirname(dirpath))
+        {
+            mkdir(dirpath);
+            return;
+        }
+        if (fs.existsSync(dirname))
+        {
+            fs.mkdirSync(dirpath)
+        }
+        else
+        {
+            mkdir(dirname, path.dirname(dirname));
+            fs.mkdirSync(dirpath);
+        }
+    }
+}
 router.post('/file-upload', function(req, res, next)
 {
     var form = new formidable.IncomingForm();
     form.encoding = 'utf-8';
     form.uploadDir = 'public' + AVATAR_UPLOAD_FOLDER;
     form.keepExtensions = true;
-    form.maxFieldsSize = 2 * 1024 * 1024;
-
+    form.maxFieldsSize = 20000 * 1024 * 1024;
+    mkdir(form.uploadDir);
     form.parse(req, function(err, fields, files)
     {
-
+        console.log("file tpye " + files.fulAvatar);
         if (err)
         {
             res.locals.error = err;
+            console.log(err);
             res.render('index',
             {
                 title: TITLE
             });
             return;
         }
-        console.log("file tpye "+ files.fulAvatar.type);
-        var extName = ''; //后缀名
-        switch (files.fulAvatar.type)
-        {
-            case 'image/pjpeg':
-                extName = 'jpg';
-                break;
-            case 'image/jpeg':
-                extName = 'jpg';
-                break;
-            case 'image/png':
-                extName = 'png';
-                break;
-            case 'image/x-png':
-                extName = 'png';
-                break;
-        }
-
-        if (extName.length == 0)
-        {
-            res.locals.error = '只支持png和jpg格式图片';
-            res.render('index',
-            {
-                title: TITLE
-            });
-            return;
-        }
-
-        var avatarName = Math.random() + '.' + extName;
+        var avatarName = "temp.xlsx";
         var newPath = form.uploadDir + avatarName;
+        var obj = xlsx.parse(newPath); // parses a file 
 
-        console.log(newPath);
+       // var obj = xlsx.parse(fs.readFileSync(newPath));
+        console.log(obj[0].data);
         fs.renameSync(files.fulAvatar.path, newPath); //重命名
     });
 
     res.locals.success = '上传成功';
-    res.render('index',
-    {
-        title: TITLE
-    });
+    res.redirect('/order');
 });
 
 module.exports = router;
