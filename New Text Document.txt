@@ -1,5 +1,5 @@
 1.paging
-2.uploading
+2.uploading done
 3.transfer
 4.search
 5.report

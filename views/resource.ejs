@@ -68,6 +68,17 @@ $(function(){
         });
 });
 
+// $(function(){
+//   $('button#Transfer').on('click', function(){
+//     var id = $(event.target).closest('tr').find('#id').text();
+//     var name = $(event.target).closest('tr').find('#name').text();
+
+//           $(".modal-title").text("Edit asset");
+//           $("#modalform").attr("action","resource/update");
+//           $("#inputName").val(name);
+//         });
+// });
+
       $(function(){
         $('button#Add').on('click', function(){
           $(".modal-title").text("Add asset");
@@ -149,7 +160,7 @@ $(function(){
              </div>
            </td>
            <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-             <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Transfer</a>
+             <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#Transfer" id="Transfer">Transfer</a>
              </td>
            </tr>
            <% }); %>
@@ -164,11 +175,11 @@ $(function(){
         Add
       </button>
       <button class="btn btn-lg btn-primary" type="submit">Delete</button>
-      <button class="btn btn-lg btn-primary" type="submit">Transfer</button>
+      <button class="btn btn-lg btn-primary" type="submit" data-target="#TransferModal" id="Transfer">Transfer</button>
     </div>
 
 
-    <!-- Modal -->
+    <!-- Edit Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -293,6 +304,52 @@ $(function(){
         </div>
       </div>
     </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal fade" id="TransferModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add Asset</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" action="/resource/add" method="post" id="modalform">
+              <input type="hidden" id="inputId"  name="id">
+              <div class="control-group">
+                <label class="control-label" for="inputName">Name</label>
+                <div class="controls">
+                  <input type="text" id="inputName" placeholder="Name" name="name">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="inputLocation">Location</label>
+                <div class="controls">
+                  <input type="text" id="inputLocation" placeholder="Location" name="location">
+                </div>
+              </div>
+
+
+
+              <div class="control-group">
+                <label class="control-label" for="inputDiscard">Discard</label>
+                <div class="controls">
+                  <input type="radio" name="discard" value="1" id="inputDiscard"/> Yes
+                  <input type="radio" name="discard" value="0" id="inputDiscard"/> No
+                </div>
+              </div>
+              <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Save changes"></input>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
 
   </body>
