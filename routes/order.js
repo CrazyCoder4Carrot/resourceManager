@@ -26,6 +26,7 @@ router.get('/', function(req, res, next)
                     allOrderInfo: queryResults,
                     moment: moment
                 });
+                console.log(queryResults);
             }
             else
             {
@@ -113,8 +114,7 @@ router.post('/update', function(req, res, next)
             order: req.body.order,
             date: req.body.date,
             comment: req.body.comment,
-            team: req.body.team,
-            id: req.body.id
+            team: req.body.team
         }
         db.updateOrder(orderInfo, function(err, queryResults)
         {
@@ -191,11 +191,42 @@ router.post('/file-upload', function(req, res, next)
         }
         var avatarName = "temp.xlsx";
         var newPath = form.uploadDir + avatarName;
+        console.log(newPath);
+                fs.renameSync(files.fulAvatar.path, newPath); //重命名
         var obj = xlsx.parse(newPath); // parses a file 
 
-       // var obj = xlsx.parse(fs.readFileSync(newPath));
-        console.log(obj[0].data);
-        fs.renameSync(files.fulAvatar.path, newPath); //重命名
+        // var obj = xlsx.parse(fs.readFileSync(newPath));
+         console.log("count is " + obj[0].data.length);
+        for (var i = 1; i < obj[0].data.length; i++)
+        {
+            console.log(obj[0].data[i][0]);
+            var date = new Date(1900, 0, obj[0].data[i][5] - 1);
+            var orderInfo = {
+                category: obj[0].data[i][0].toString(),
+                vendor: obj[0].data[i][1].toString(),
+                quantity: obj[0].data[i][2].toString(),
+                unitPrice: obj[0].data[i][3].toString(),
+                order: obj[0].data[i][4].toString(),
+                date: date.toISOString().slice(0, 19).replace('T', ' '),
+                comment: obj[0].data[i][6].toString(),
+                team: obj[0].data[i][7].toString()
+            }
+            console.log(orderInfo);
+            db.addOrder(orderInfo, function(err, queryResults)
+            {
+                if (err)
+                {
+                    console.log(queryResults);
+                }
+                if(!err)
+                {
+                    console.log("insert ok");
+                }
+            });
+        }
+        console.log("import finished");
+       // fs.unlink(newPath);
+
     });
 
     res.locals.success = '上传成功';

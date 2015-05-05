@@ -100,10 +100,11 @@ $(function(){
         <option>Disk</option>
       </select>
       <button type="submit" class="btn btn-primary btn-lg">Search</button>
-      <input id="input-1" type="file" class="file">
-      <button type="submit" class="btn btn-primary btn-lg">Upload</button>
     </form>
-
+    <form method="post" enctype="multipart/form-data" action="/resource/file-upload">
+  <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
+  <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
+</form>
     <div class="table-responsive">
       <table class="table table-condensed table-striped table-bordered table-hover no-margin">
         <thead>
