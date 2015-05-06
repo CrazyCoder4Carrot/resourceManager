@@ -20,14 +20,30 @@ router.get('/', function(req, res, next)
     var allUsersInfo;
     if (sess.results)
     {
+        var users ;
+
+        db.queryallusersName(sess.results, function(err, queryResults)
+        {
+            if (queryResults)
+            {
+                console.log(queryResults);
+                users = queryResults;
+            }
+            else
+            {
+                users = Null;
+            }
+        });
 
         db.queryResource(sess.results, function(err, queryResults)
         {
+            
             if (queryResults)
             {
                 res.render('resource',
                 {
                     allResourceInfo: queryResults,
+                    allUsers: users,
                     moment: moment
                 });
             }
@@ -202,4 +218,39 @@ router.post('/file-upload', function(req, res, next)
     res.locals.success = '上传成功';
     res.redirect('/resource');
 });
+
+//add thansfer
+router.post('/addtrans', function(req, res, next)
+{
+    var sess = req.session;
+    var date  = new Date();
+    console.log(sess);
+    if (sess.results)
+    {
+        var resourceInfo = {
+            assetId: req.body.id,
+            type: req.body.type,
+            source: sess.results.username,
+            dest: req.body.dest,
+            date:  date.toISOString().slice(0, 19).replace('T', ' ')
+        }
+        db.addChange(resourceInfo, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.redirect('/resource');
+            }
+            else
+            {
+                res.send(queryResults);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+});
+
+
 module.exports = router;

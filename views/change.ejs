@@ -63,7 +63,7 @@
                <td class="hidden-phone" id="Type"><%= changeInfo.Type %></td>
                <td class="hidden-phone" id="source"><%= changeInfo.source %></td>
                <td class="hidden-phone" id="dest"><%= changeInfo.dest %></td>
-               <td class="hidden-phone" id="datetime"><%= changeInfo.datetime.toISOString() %></td>
+               <td class="hidden-phone" id="datetime"><%= moment(changeInfo.datetime).format('YYYY-MM-DD HH:MM:SS') %></td>
                </tr>
                <% }); %>
              </tbody>

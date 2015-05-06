@@ -68,16 +68,14 @@ $(function(){
         });
 });
 
-// $(function(){
-//   $('button#Transfer').on('click', function(){
-//     var id = $(event.target).closest('tr').find('#id').text();
-//     var name = $(event.target).closest('tr').find('#name').text();
-
-//           $(".modal-title").text("Edit asset");
-//           $("#modalform").attr("action","resource/update");
-//           $("#inputName").val(name);
-//         });
-// });
+$(function(){
+  $('button#Transfer').on('click', function(){
+    var id = $(event.target).closest('tr').find('#id').text();
+    var type = $(event.target).closest('tr').find('#type').text(); 
+    $("#assetId").val(id);
+    $("#assetType").val(type);
+        });
+});
 
       $(function(){
         $('button#Add').on('click', function(){
@@ -160,7 +158,7 @@ $(function(){
              </div>
            </td>
            <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-             <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#Transfer" id="Transfer">Transfer</a>
+             <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#TransferModal" id="Transfer">Transfer</a>
              </td>
            </tr>
            <% }); %>
@@ -314,32 +312,22 @@ $(function(){
             <h4 class="modal-title" id="myModalLabel">Add Asset</h4>
           </div>
           <div class="modal-body">
-            <form class="form-horizontal" action="/resource/add" method="post" id="modalform">
-              <input type="hidden" id="inputId"  name="id">
+            <form class="form-horizontal" action="/resource/addtrans" method="post" id="modalform">
+              <input type="hidden" id="assetId"  name="id">
+              <input type="hidden" id="assetType"  name="type">
               <div class="control-group">
-                <label class="control-label" for="inputName">Name</label>
+                <label class="control-label" for="inputTeamId">Name</label>
                 <div class="controls">
-                  <input type="text" id="inputName" placeholder="Name" name="name">
+                  <select  name="dest" id="inputTeamId">
+                  <% allUsers.forEach(function(userInfo) { %>
+                    <option><%= userInfo.username %></option>
+                  <% }); %>
+                  </select>
                 </div>
               </div>
-              <div class="control-group">
-                <label class="control-label" for="inputLocation">Location</label>
-                <div class="controls">
-                  <input type="text" id="inputLocation" placeholder="Location" name="location">
-                </div>
-              </div>
-
-
-
-              <div class="control-group">
-                <label class="control-label" for="inputDiscard">Discard</label>
-                <div class="controls">
-                  <input type="radio" name="discard" value="1" id="inputDiscard"/> Yes
-                  <input type="radio" name="discard" value="0" id="inputDiscard"/> No
-                </div>
               </div>
               <div class="modal-footer">
-                <input type="submit" class="btn btn-primary" value="Save changes"></input>
+                <input type="submit" class="btn btn-primary" value="Transfer"></input>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
 
