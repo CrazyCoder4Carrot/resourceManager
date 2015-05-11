@@ -1,6 +1,6 @@
 1.paging
 2.uploading done
-3.transfer
+3.transfer done
 4.search
 5.report
 
