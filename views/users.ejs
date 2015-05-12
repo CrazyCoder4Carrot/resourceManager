@@ -17,7 +17,21 @@
 <!-- Custom styles for this template -->
 <link href="css/signin.css" rel="stylesheet">
 
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+  
+<!-- jQuery -->
+<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+
+
       <script>
+      $(document).ready( function () {
+    $('#mytable2').DataTable();
+} );
             $(function(){
         $('button#Edit').on('click', function(){
           var id = $(event.target).closest('tr').find('#id').text();
@@ -60,20 +74,21 @@
           <input type="text" class="input-medium search-query">
           <button type="submit" class="btn btn-lg btn-primary">Search</button>
         </form>
-        <div class="table-responsive">
-          <table class="table table-condensed table-striped table-bordered table-hover no-margin">
+    <!--     <div class="table-responsive"> -->
+          <table id = "mytable2"  class="display">
             <thead>
               <tr>
-                <th style="width:5%">
-                  <input class="no-margin" type="checkbox">
+                <th >
+                 <!--  <input class="no-margin" type="checkbox"> -->
                 </th>
-                <th style="width:5%">Id</th>
-                <th style="width:20%">Name</th>
-                <th style="width:20%" class="hidden-phone">Password</th>
-                <th style="width:10%" class="hidden-phone">Team</th>
-                <th style="width:15%" class="hidden-phone">Email Address</th>
-                <th style="width:10%" class="hidden-phone">Role</th>
-                <th style="width:10%" class="hidden-phone" td colspan="2">Action</th>
+                <th >Id</th>
+                <th >Name</th>
+                <th >Password</th>
+                <th  >Team</th>
+                <th  >Email Address</th>
+                <th >Role</th>
+                <th >Action</th>
+                <th >Action</th>
               </tr>
             </thead>
             <tbody>
@@ -81,26 +96,25 @@
               <% allUsersInfo.forEach(function(userInfo) { %>
               <tr>
                 <td>
-                  <input class="no-margin" type="checkbox">
+                  <input type="checkbox">
                 </td>
                 <td id="id"><%= userInfo.id %></td>
                 <td id="username"><%= userInfo.username %></td>
-                <td class="hidden-phone" id="password"><%= userInfo.password %></td>
-                <td class="hidden-phone" id="teamid"><%= userInfo.teamid %></td>
-                <td class="hidden-phone" id="emailaddress"><%= userInfo.emailaddress %></td>
-                <td class="hidden-phone" id="role"><%= userInfo.role %></td>
-                <td class="hidden-phone">
+                <td id="password"><%= userInfo.password %></td>
+                <td id="teamid"><%= userInfo.teamid %></td>
+                <td id="emailaddress"><%= userInfo.emailaddress %></td>
+                <td  id="role"><%= userInfo.role %></td>
+                <td >
                 <div class="btn-group"><a href="\users\delete\<%= userInfo.id %>" class="btn btn-primary">Delete</a>
                   </div>
                 </td>
-                 <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
+                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
                 </td>
               </tr>
               <% }); %>
             </tbody>
           </table>
-        </div>
-
+  <!--       </div> -->
         <div class="form-actions">
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
             Add
@@ -174,3 +188,4 @@
 
 
       </body>
+

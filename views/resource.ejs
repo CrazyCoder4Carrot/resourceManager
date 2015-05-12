@@ -21,7 +21,39 @@
 <script type="text/javascript" src="/app/bower_components/moment/min/moment.min.js"></script>
 <script type="text/javascript" src="app/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="/app/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+  
+<!-- jQuery -->
+<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
 <script>
+      $(document).ready( function () {
+    $('#mytable').DataTable();
+} );
+$('#mytable').dataTable( {
+  "columnDefs": [
+    { "width": "2%", "targets": 0 },
+     { "width": "10%", "targets": 1 },
+      { "width": "5%", "targets": 2 },
+       { "width": "6%", "targets": 3 },
+        { "width": "7%", "targets": 4 },
+         { "width": "5%", "targets": 5 },
+          { "width": "5%", "targets": 6 },
+           { "width": "5%", "targets":  7},
+            { "width": "5%", "targets": 8 },
+             { "width": "5%", "targets": 9 },
+              { "width": "5%", "targets": 10 },
+               { "width": "5%", "targets": 11 },
+               { "width": "5%", "targets": 12 },
+               { "width": "6%", "targets": 13 },
+               { "width": "7%", "targets": 14 }
+
+  ]
+} );
+
 function setCheckedValue(radioObj, newValue) {
   if(!radioObj)
     return;
@@ -100,7 +132,7 @@ $(function(){
   <% include nav %>
   <div class = "container">
     <h1>Asset Managment</h1>
-    <form class="form-inline">
+<!--     <form class="form-inline">
       <select>
         <option>All</option>
         <option>Server</option>
@@ -109,30 +141,31 @@ $(function(){
         <option>Disk</option>
       </select>
       <button type="submit" class="btn btn-primary btn-lg">Search</button>
-    </form>
+    </form> -->
     <form method="post" enctype="multipart/form-data" action="/resource/file-upload">
   <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
   <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
 </form>
     <div class="table-responsive">
-      <table class="table table-condensed table-striped table-bordered table-hover no-margin">
+      <table id = "mytable"class="display" >
         <thead>
           <tr>
             <th style="width:5%">
-              <input class="no-margin" type="checkbox">
             </th>
-            <th style="width:5%" class="hidden-phone">Id</th>
-            <th style="width:10%" class="hidden-phone">Name</th>
-            <th style="width:10%" class="hidden-phone">Type</th>
-            <th style="width:10%" class="hidden-phone">Size</th>
-            <th style="width:10%" class="hidden-phone">Server Id</th>
-            <th style="width:10%" class="hidden-phone">User Id</th>
-            <th style="width:10%" class="hidden-phone">Team Id</th>
-            <th style="width:10%" class="hidden-phone">Location</th>
-            <th style="width:10%" class="hidden-phone">Position</th>
-            <th style="width:15%" class="hidden-phone">Create Time</th>
-            <th style="width:15%" class="hidden-phone">Discard</th>
-            <th style="width:15%" class="hidden-phone" td colspan="3">Action</th>
+            <th style="width:5%" >Id</th>
+            <th style="width:6%" >Name</th>
+            <th style="width:5%" >Type</th>
+            <th style="width:10%" >Size</th>
+            <th style="width:10%" >Server</th>
+            <th style="width:10%" >User</th>
+            <th style="width:10%" >Team</th>
+            <th style="width:10%" >Location</th>
+            <th style="width:9%" >Position</th>
+            <th style="width:15%" >Create Time</th>
+            <th style="width:15%" >Discard</th>
+            <th style="width:5%"  >Action</th>
+            <th style="width:5%"  >Action</th>
+            <th style="width:5%" >Action</th>
           </tr>
         </thead>
         <tbody>

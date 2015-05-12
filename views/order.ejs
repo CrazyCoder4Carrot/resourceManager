@@ -21,7 +21,13 @@
 <script type="text/javascript" src="/app/bower_components/moment/min/moment.min.js"></script>
 <script type="text/javascript" src="app/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="/app/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+  
+<!-- jQuery -->
+<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
 <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
@@ -34,6 +40,11 @@
 
 
       <script>
+
+      $(document).ready( function () {
+    $('#mytable').DataTable();
+} );
+
       $(function(){
         $('button#Edit').on('click', function(){
           var id = $(event.target).closest('tr').find('#id').text();
@@ -85,17 +96,17 @@
   <% include nav %>
   <div class = "container">
     <h1>Order Managment</h1>
-    <form class="form-search">
+<!--     <form class="form-search">
 
       <input type="text" class="input-medium search-query">
       <button type="submit" class="btn btn-lg btn-primary">Search</button>
-    </form>
+    </form> -->
     <form method="post" enctype="multipart/form-data" action="/order/file-upload">
   <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
   <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
 </form>
     <div class="table-responsive">
-      <table class="table table-condensed table-striped table-bordered table-hover no-margin">
+      <table id = "mytable" class="display">
         <thead>
           <tr>
             <th style="width:5%">
@@ -110,7 +121,8 @@
             <th style="width:15%" class="hidden-phone">DateTime</th>
             <th style="width:15%" class="hidden-phone">Comment</th>
             <th style="width:15%" class="hidden-phone">Team</th>
-            <th style="width:15%" class="hidden-phone" td colspan="2">Action</th>
+            <th style="width:15%" class="hidden-phone" >Delete</th>
+            <th style="width:15%" class="hidden-phone" >Edit</th>
           </tr>
         </thead>
         <tbody>
