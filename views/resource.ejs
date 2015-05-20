@@ -32,27 +32,30 @@
 <script>
       $(document).ready( function () {
     $('#mytable').DataTable();
+
 } );
 $('#mytable').dataTable( {
-  "columnDefs": [
-    { "width": "2%", "targets": 0 },
-     { "width": "10%", "targets": 1 },
-      { "width": "5%", "targets": 2 },
-       { "width": "6%", "targets": 3 },
-        { "width": "7%", "targets": 4 },
-         { "width": "5%", "targets": 5 },
-          { "width": "5%", "targets": 6 },
-           { "width": "5%", "targets":  7},
-            { "width": "5%", "targets": 8 },
-             { "width": "5%", "targets": 9 },
-              { "width": "5%", "targets": 10 },
-               { "width": "5%", "targets": 11 },
-               { "width": "5%", "targets": 12 },
-               { "width": "6%", "targets": 13 },
-               { "width": "7%", "targets": 14 }
-
-  ]
+  "autoWidth": true
 } );
+// $('#mytable').dataTable( {
+//     { "width": "2%", "targets": 0 },
+//      { "width": "10%", "targets": 1 },
+//       { "width": "5%", "targets": 2 },
+//        { "width": "6%", "targets": 3 },
+//         { "width": "7%", "targets": 4 },
+//          { "width": "5%", "targets": 5 },
+//           { "width": "5%", "targets": 6 },
+//            { "width": "5%", "targets":  7},
+//             { "width": "5%", "targets": 8 },
+//              { "width": "5%", "targets": 9 },
+//               { "width": "5%", "targets": 10 },
+//                { "width": "5%", "targets": 11 },
+//                { "width": "5%", "targets": 12 },
+//                { "width": "6%", "targets": 13 },
+//                { "width": "7%", "targets": 14 }
+
+//   ]
+// } );
 
 function setCheckedValue(radioObj, newValue) {
   if(!radioObj)
@@ -163,13 +166,12 @@ $(function(){
             <th style="width:9%" >Position</th>
             <th style="width:15%" >Create Time</th>
             <th style="width:15%" >Discard</th>
-            <th style="width:5%"  >Action</th>
-            <th style="width:5%"  >Action</th>
-            <th style="width:5%" >Action</th>
+            <th style="width:5%"  >Del</th>
+            <th style="width:5%"  >Edit</th>
+            <th style="width:5%" >Trans</th>
           </tr>
         </thead>
         <tbody>
-
           <% allResourceInfo.forEach(function(resourceInfo) { %>
           <tr>
            <td>

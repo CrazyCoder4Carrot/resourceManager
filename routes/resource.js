@@ -217,6 +217,7 @@ router.post('/file-upload', function(req, res, next)
 
     res.locals.success = '上传成功';
     res.redirect('/resource');
+    
 });
 
 //add thansfer

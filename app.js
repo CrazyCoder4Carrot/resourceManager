@@ -16,6 +16,7 @@ var report = require('./routes/report');
 var logout = require('./routes/logout');
 var resource = require('./routes/resource');
 var change = require('./routes/change');
+var setting = require('./routes/setting');
 var app = express();
 
 // view engine setup
@@ -42,6 +43,7 @@ app.use('/report',report);
 app.use('/logout',logout);
 app.use('/resource',resource);
 app.use('/change',change);
+app.use('/setting',setting);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
