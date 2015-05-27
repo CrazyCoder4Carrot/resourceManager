@@ -21,12 +21,13 @@ router.get('/', function(req, res, next)
         {
             if (queryResults)
             {
+                console.log(queryResults);
                 res.render('order',
                 {
                     allOrderInfo: queryResults,
-                    moment: moment
+                    moment: moment,
+                    result:sess.results
                 });
-                console.log(queryResults);
             }
             else
             {

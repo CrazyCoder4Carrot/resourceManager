@@ -1,26 +1,42 @@
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Asset Management System</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li calss = "active" ><a href="\users" >Users</a></li>
-            <li><a href="\resource">Assets</a></li>
-            <li><a href="\change">Change</a></li>
-            <li><a href="\report">Report</a></li>
-            <li><a href="\order">Order</a></li>
-            <li><a href="\setting">Setting</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="../logout/">Logout</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
+    <div class="container">
+    <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Asset Management System</a>
+    </div>
+
+    <div id="navbar" class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <%if(typeof result != 'undefined' && result.role != 3){%>
+    <li calss = "active" ><a href="\users" >Users</a></li>
+<%}%>
+    <li><a href="\resource">Assets</a></li>
+    <li><a href="\change">Change</a></li>
+    <li><a href="\report">Report</a></li>
+    <li><a href="\order">Order</a></li>
+    <li class="dropdown">
+            <%if(typeof result != 'undefined' && result.role != 3){%>
+        <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Setting <b class="caret"></b></a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/team">Team</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/lab">Lab</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/type">Type</a></li>
+<%}%>
+
+    </ul>
+    </li>
+
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+    <li><a href="../logout/">Logout</a></li>
+    </ul>
+    </div><!--/.nav-collapse -->
+
+    </div>
     </nav>

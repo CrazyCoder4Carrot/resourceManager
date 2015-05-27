@@ -20,36 +20,139 @@ router.get('/', function(req, res, next)
     var allUsersInfo;
     if (sess.results)
     {
-        var users ;
+        var users;
+        var alltypes;
+        var alllabs;
+        var allteams;
+        // db.queryallusersName(sess.results, function(err, queryResults)
+        // {
+        //     if (queryResults)
+        //     {
+        //         console.log(queryResults);
+        //         users = queryResults;
+        //     }
+        //     else
+        //     {
+        //         users = Null;
+        //     }
+        // });
+        // db.selectType(sess.results, function(err, queryResults)
+        // {
+        //     if (queryResults)
+        //     {
+        //         alltypes = queryResults;
+        //     }
+        //     else
+        //     {
+        //         alltypes = Null;
+        //     }
+        // });
+        // db.selectLab(sess.results, function(err, queryResults)
+        // {
+        //     if (queryResults)
+        //     {
+        //         alllabs = queryResults;
+        //     }
+        //     else
+        //     {
+        //         alllabs = Null;
+        //     }
+        // });
+        // db.selectTeam(sess.results, function(err, queryResults)
+        // {
+        //     if (queryResults)
+        //     {
+        //         allteams = queryResults;
+        //     }
+        //     else
+        //     {
+        //         allteams = Null;
+        //     }
+        // });
 
+        // db.queryResource(sess.results, function(err, queryResults)
+        // {
+        //     if (queryResults)
+        //     {
+        //         res.render('resource',
+        //         {
+        //             allResourceInfo: queryResults,
+        //             allUsers: users,
+        //             allTeams: allteams,
+        //             allTypes: alltypes,
+        //             allLabs: alllabs,
+        //             moment: moment
+        //         });
+        //     }
+        //     else
+        //     {
+        //         allResourceInfo = Null;
+        //     }
+        // });
         db.queryallusersName(sess.results, function(err, queryResults)
         {
             if (queryResults)
             {
                 console.log(queryResults);
                 users = queryResults;
+                db.selectType(sess.results, function(err, queryResults)
+                {
+                    if (queryResults)
+                    {
+                        alltypes = queryResults;
+                        db.selectLab(sess.results, function(err, queryResults)
+                        {
+                            if (queryResults)
+                            {
+                                alllabs = queryResults;
+                                db.selectTeam(sess.results, function(err, queryResults)
+                                {
+                                    if (queryResults)
+                                    {
+                                        allteams = queryResults;
+                                        db.queryResource(sess.results, function(err, queryResults)
+                                        {
+                                            if (queryResults)
+                                            {
+                                                res.render('resource',
+                                                {
+                                                    allResourceInfo: queryResults,
+                                                    allUsers: users,
+                                                    allTeams: allteams,
+                                                    allTypes: alltypes,
+                                                    allLabs: alllabs,
+                                                    moment: moment,
+                                                    result:sess.results
+                                                });
+                                            }
+                                            else
+                                            {
+                                                allResourceInfo = Null;
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        allteams = Null;
+                                    }
+                                });
+
+                            }
+                            else
+                            {
+                                alllabs = Null;
+                            }
+                        });
+                    }
+                    else
+                    {
+                        alltypes = Null;
+                    }
+                })
             }
             else
             {
                 users = Null;
-            }
-        });
-
-        db.queryResource(sess.results, function(err, queryResults)
-        {
-            
-            if (queryResults)
-            {
-                res.render('resource',
-                {
-                    allResourceInfo: queryResults,
-                    allUsers: users,
-                    moment: moment
-                });
-            }
-            else
-            {
-                allResourceInfo = Null;
             }
         });
     }
@@ -217,14 +320,14 @@ router.post('/file-upload', function(req, res, next)
 
     res.locals.success = '上传成功';
     res.redirect('/resource');
-    
+
 });
 
 //add thansfer
 router.post('/addtrans', function(req, res, next)
 {
     var sess = req.session;
-    var date  = new Date();
+    var date = new Date();
     console.log(sess);
     if (sess.results)
     {
@@ -233,7 +336,7 @@ router.post('/addtrans', function(req, res, next)
             type: req.body.type,
             source: sess.results.username,
             dest: req.body.dest,
-            date:  date.toISOString().slice(0, 19).replace('T', ' ')
+            date: date.toISOString().slice(0, 19).replace('T', ' ')
         }
         db.addChange(resourceInfo, function(err, queryResults)
         {

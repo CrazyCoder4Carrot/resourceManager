@@ -16,7 +16,9 @@ var report = require('./routes/report');
 var logout = require('./routes/logout');
 var resource = require('./routes/resource');
 var change = require('./routes/change');
-var setting = require('./routes/setting');
+var team = require('./routes/team');
+var lab = require('./routes/lab');
+var type = require('./routes/type');
 var app = express();
 
 // view engine setup
@@ -43,7 +45,9 @@ app.use('/report',report);
 app.use('/logout',logout);
 app.use('/resource',resource);
 app.use('/change',change);
-app.use('/setting',setting);
+app.use('/team',team);
+app.use('/lab',lab);
+app.use('/type',type);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

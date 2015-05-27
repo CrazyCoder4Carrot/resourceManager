@@ -48,7 +48,17 @@
           $("#inputPassword").val(password);
           $("#inputTeam").val(teamid);
           $("#inputEmail").val(emailaddress);
-          $("#inputRole").val(role);
+         // $("#inputRole").val(role);
+//$('select[name="' + inputRole + '"] option:selected').text(role);
+function setSelectedIndex(s, v) {
+for ( var i = 0; i < s.options.length; i++ ) {
+if ( s.options[i].text == v ) {
+s.options[i].selected = true;
+return;
+}
+}
+}
+setSelectedIndex(document.getElementById('inputRole'),role);
           $('#inputId').val(id);
         });
       });
@@ -150,9 +160,9 @@
                   <label class="control-label" for="inputTeam">team</label>
                   <div class="controls">
                     <select name="teamid" id="inputTeam">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
+                  <% allTeams.forEach(function(teamInfo) { %>
+                    <option><%= teamInfo.name %></option>
+                  <% }); %>
                     </select>
                   </div>
                 </div>
@@ -168,9 +178,12 @@
                   <label class="control-label" for="inputEmail">Role</label>
                   <div class="controls">
                     <select name="role" id="inputRole">
-                      <option>1</option>
+                                        <% allRoles.forEach(function(RoleInfo) { %>
+                    <option value=<%= RoleInfo.id %> ><%= RoleInfo.name %></option>
+                  <% }); %>
+<!--                       <option>1</option>
                         <option>2</option>
-                        <option>3</option>
+                        <option>3</option> -->
                       </select>
                     </div>
                   </div>

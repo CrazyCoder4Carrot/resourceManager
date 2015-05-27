@@ -17,7 +17,8 @@ router.get('/', function(req, res, next)
                 res.render('change',
                 {
                     allChangeInfo: queryResults,
-                    moment: moment
+                    moment: moment,
+                    result:sess.results
                 });
             }
             else

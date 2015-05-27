@@ -37,25 +37,7 @@
 $('#mytable').dataTable( {
   "autoWidth": true
 } );
-// $('#mytable').dataTable( {
-//     { "width": "2%", "targets": 0 },
-//      { "width": "10%", "targets": 1 },
-//       { "width": "5%", "targets": 2 },
-//        { "width": "6%", "targets": 3 },
-//         { "width": "7%", "targets": 4 },
-//          { "width": "5%", "targets": 5 },
-//           { "width": "5%", "targets": 6 },
-//            { "width": "5%", "targets":  7},
-//             { "width": "5%", "targets": 8 },
-//              { "width": "5%", "targets": 9 },
-//               { "width": "5%", "targets": 10 },
-//                { "width": "5%", "targets": 11 },
-//                { "width": "5%", "targets": 12 },
-//                { "width": "6%", "targets": 13 },
-//                { "width": "7%", "targets": 14 }
 
-//   ]
-// } );
 
 function setCheckedValue(radioObj, newValue) {
   if(!radioObj)
@@ -234,10 +216,9 @@ $(function(){
                 <div class="controls">
 <!--                   <input type="text" id="inputType" placeholder="Type" name="type"> -->
                   <select  name="type" id="inputType">
-                    <option>Server</option>
-                    <option>Memory</option>
-                    <option>Disk</option>
-                    <option>Switch</option>
+                  <% allTypes.forEach(function(typeInfo) { %>
+                    <option><%= typeInfo.name %></option>
+                  <% }); %>
                   </select>
                 </div>
               </div>
@@ -262,9 +243,9 @@ $(function(){
                 <label class="control-label" for="inputUserId">User</label>
                 <div class="controls">
                   <select name="userId" id="inputUserId">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                  <% allUsers.forEach(function(userInfo) { %>
+                    <option><%= userInfo.username %></option>
+                  <% }); %>
                   </select>
                 </div>
               </div>
@@ -272,9 +253,9 @@ $(function(){
                 <label class="control-label" for="inputTeamId">Team</label>
                 <div class="controls">
                   <select  name="teamId" id="inputTeamId">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                  <% allTeams.forEach(function(teamInfo) { %>
+                    <option><%= teamInfo.name %></option>
+                  <% }); %>
                   </select>
                 </div>
               </div>
