@@ -57,8 +57,17 @@
           var comment = $(event.target).closest("tr").find("#comment").text();
           var teamId = $(event.target).closest("tr").find("#teamId").text();
 
+
+$.getJSON("http://localhost:3000/api/teams", function(data){
+  var listItems;
+  $.each(data, function(i,val){
+  //  console.log(val.name);
+    listItems += "<option value='" + val.id+ "'>" + val.name + "</option>";
+  });
+  $("#inputTeam").html(listItems);
+});
           $(".modal-title").text("Edit order");
-          $("#modalform").attr("action","resource/update");
+          $("#modalform").attr("action","order/update");
           $("#inputCategory").val(category);
           $("#inputVendor").val(vendor);
           $("#inputQuantity").val(quantity); 
@@ -73,9 +82,17 @@
 });
       $(function(){
         $('button#Add').on('click', function(){
+          $.getJSON("http://localhost:3000/api/teams", function(data){
+  var listItems;
+  $.each(data, function(i,val){
+  //  console.log(val.name);
+    listItems += "<option value='" + val.id+ "'>" + val.name + "</option>";
+  });
+  $("#inputTeam").html(listItems);
+});
           $(".modal-title").text("Add order");
-          $("#modalform").attr("action","resource/add");
-          console.log()
+          $("#modalform").attr("action","order/add");
+          console.log("hh");
           $("#inputCategory").val("");
           $("#inputVendor").val("");
           $("#inputQuantity").val("");
@@ -168,7 +185,7 @@
               <h4 class="modal-title" id="myModalLabel">Add Order</h4>
             </div>
             <div class="modal-body">
-              <form class="form-horizontal" action="/order/add" method="post" name="modalform">
+              <form class="form-horizontal" action="/order/update" method="post" name="modalform" id="modalform">
                 <input type="hidden" id="inputId" placeholder="Category" name="id">
                 <div class="control-group">
                   <label class="control-label" for="inputName">Category</label>
@@ -240,9 +257,7 @@
                   <label class="control-label" for="inputName">Team</label>
                   <div class="controls">
                     <select name="team" id="inputTeam">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
+
                     </select>
                   </div>
                 </div>

@@ -17,56 +17,70 @@ router.get('/', function(req, res, next)
             if (queryResults)
             {
                 allteams = queryResults;
+                db.selectAllRoles(sess.results, function(err, queryResults)
+                {
+                    if (queryResults)
+                    {
+                        allRoles = queryResults;
+                        db.queryallusers(sess.results, function(err, queryResults)
+                        {
+
+                            if (queryResults)
+                            {
+                                allUserInfo = queryResults;
+                                for (var i = 0; i < allUserInfo.length; i++)
+                                {
+                                    for (var j = 0; j < allRoles.length; j++)
+                                    {
+                                        if (allUserInfo[i] != undefined && allRoles[j] != undefined)
+                                        {
+                                            if (allUserInfo[i].role == allRoles[j].id)
+                                            {
+                                                allUserInfo[i].role = allRoles[j].name;
+                                            }
+                                        }
+
+                                    }
+                                }
+                                res.render('users',
+                                {
+                                    allUsersInfo: allUserInfo,
+                                    allRoles: allRoles,
+                                    result: sess.results,
+                                    allTeams: allteams
+                                });
+                            }
+                            else
+                            {
+                                allUsersInfo = null;
+                            }
+                        });
+                    }
+                    else
+                    {
+                        allRoles = null;
+                    }
+                });
             }
             else
             {
                 allteams = null;
             }
         });
-        db.selectAllRoles(sess.results, function(err, queryResults)
-        {
-            if (queryResults)
-            {
-                allRoles = queryResults;
-            }
-            else
-            {
-                allRoles = null;
-            }
-        });
 
-        db.queryallusers(sess.results, function(err, queryResults)
-        {
-            if (queryResults)
-            {
-                allUserInfo = queryResults;
-                for (var i = 0; i < allUserInfo.length; i++)
-                {
-                    for (var j = 0; j < allRoles.length; j++)
-                    {
-                        if (allUserInfo[i] != undefined && allRoles[j] != undefined)
-                        {
-                            if (allUserInfo[i].role == allRoles[j].id)
-                            {
-                                allUserInfo[i].role = allRoles[j].name;
-                            }
-                        }
+        // db.selectAllRoles(sess.results, function(err, queryResults)
+        // {
+        //     if (queryResults)
+        //     {
+        //         allRoles = queryResults;
+        //     }
+        //     else
+        //     {
+        //         allRoles = null;
+        //     }
+        // });
 
-                    }
-                }
-                res.render('users',
-                {
-                    allUsersInfo: allUserInfo,
-                    allRoles: allRoles,
-                    result:sess.results,
-                    allTeams: allteams
-                });
-            }
-            else
-            {
-                allUsersInfo = null;
-            }
-        });
+
     }
     else
     {
@@ -155,11 +169,12 @@ router.post('/update', function(req, res, next)
             if (queryResults)
             {
                 allRoles = queryResults;
-                for (var i = 0; i < allRoles.length; i++)
-                {
-                    if (userinfo.role == allRoles[i].name)
-                        userinfo.role = allRoles[i].id;
-                }
+                if (allRoles)
+                    for (var i = 0; i < allRoles.length; i++)
+                    {
+                        if (userinfo.role == allRoles[i].name)
+                            userinfo.role = allRoles[i].id;
+                    }
                 db.updateUser(userinfo, function(err, queryResults)
                 {
                     if (!err)
