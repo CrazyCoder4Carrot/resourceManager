@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://getbootstrap.com/examples/signin/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="img/favicon.ico">
+<title>User Management</title>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src = "js/bootstrap.js"></script>
+<!-- Bootstrap core CSS -->
+<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/signin.css" rel="stylesheet">
+
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+  
+<!-- jQuery -->
+<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+
+
+      <script>
+      $(document).ready( function () {
+    $('#mytable2').DataTable();
+} );
+            $(function(){
+        $('button#Edit').on('click', function(){
+          var id = $(event.target).closest('tr').find('#id').text();
+          var username = $(event.target).closest('tr').find('#username').text();
+          console.log(id +" "+username);
+          //console.log(userId);
+          $(".modal-title").text("Edit lab");
+          $("#modalform").attr("action","lab/update");
+          $("#inputName").val(username);
+          $('#inputId').val(id);
+        });
+      });
+            $(function(){
+        $('button#Add').on('click', function(){
+          $(".modal-title").text("Add lab");
+          $("#modalform").attr("action","lab/add");
+          $("#inputName").val("");
+          // $("#inputPassword").val("");
+          // $("#inputTeam").val();
+          // $("#inputEmail").val("");
+          // $("#inputRole").val();
+        });
+      });
+      </script>
+    </head>
+
+    <body>
+      <% include nav %>
+      <div class = "container">
+        <h1>Lab</h1>
+    <!--     <div class="table-responsive"> -->
+          <table id = "mytable2"  class="display">
+            <thead>
+              <tr>
+                <th >
+                 <!--  <input class="no-margin" type="checkbox"> -->
+                </th>
+                <th >Id</th>
+                <th >Name</th>
+                <th >Action</th>
+                <th >Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <% allLabInfo.forEach(function(teamInfo) { %>
+              <tr>
+                <td>
+                  <input type="checkbox">
+                </td>
+                <td id="id"><%= teamInfo.id %></td>
+                <td id="username"><%= teamInfo.name %></td>
+                <td >
+                <div class="btn-group"><a href="\lab\delete\<%= teamInfo.id %>" class="btn btn-primary">Delete</a>
+                  </div>
+                </td>
+                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+  <!--       </div> -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
+            Add
+          </button>
+          <button class="btn btn-lg btn-primary" type="submit">Delete</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add User</h4>
+              </div>
+              <div class="modal-body">
+               <form class="form-horizontal" action="/lab/update" method="post" name="modalform" id="modalform">
+                <input type="hidden" id="inputId" name="id"></input>
+                <div class="control-group">
+                  <label class="control-label" for="inputName">Name</label>
+                  <div class="controls">
+                    <input type="text" id="inputName" placeholder="Name" name="name">
+                  </div>
+                </div>
+<!--                 <div class="control-group">
+                  <label class="control-label" for="inputPassword">Password</label>
+                  <div class="controls">
+                    <input type="text" id="inputPassword" placeholder="Password" name="password">
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="inputTeam">team</label>
+                  <div class="controls">
+                    <select name="teamid" id="inputTeam">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label" for="inputEmail">Email Address</label>
+                  <div class="controls">
+                    <input type="text" id="inputEmail" placeholder="Email Address" name="emailaddress">
+                  </div>
+                </div> -->
+
+<!--                 <div class="control-group">
+                  <label class="control-label" for="inputEmail">Role</label>
+                  <div class="controls">
+                    <select name="role" id="inputRole">
+                      <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                      </select>
+                    </div>
+                  </div> -->
+                  <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Save changes"></input>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+      </body>
+
