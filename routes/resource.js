@@ -20,139 +20,20 @@ router.get('/', function(req, res, next)
     var allUsersInfo;
     if (sess.results)
     {
-        var users;
-        var alltypes;
-        var alllabs;
-        var allteams;
-        // db.queryallusersName(sess.results, function(err, queryResults)
-        // {
-        //     if (queryResults)
-        //     {
-        //         console.log(queryResults);
-        //         users = queryResults;
-        //     }
-        //     else
-        //     {
-        //         users = Null;
-        //     }
-        // });
-        // db.selectType(sess.results, function(err, queryResults)
-        // {
-        //     if (queryResults)
-        //     {
-        //         alltypes = queryResults;
-        //     }
-        //     else
-        //     {
-        //         alltypes = Null;
-        //     }
-        // });
-        // db.selectLab(sess.results, function(err, queryResults)
-        // {
-        //     if (queryResults)
-        //     {
-        //         alllabs = queryResults;
-        //     }
-        //     else
-        //     {
-        //         alllabs = Null;
-        //     }
-        // });
-        // db.selectTeam(sess.results, function(err, queryResults)
-        // {
-        //     if (queryResults)
-        //     {
-        //         allteams = queryResults;
-        //     }
-        //     else
-        //     {
-        //         allteams = Null;
-        //     }
-        // });
-
-        // db.queryResource(sess.results, function(err, queryResults)
-        // {
-        //     if (queryResults)
-        //     {
-        //         res.render('resource',
-        //         {
-        //             allResourceInfo: queryResults,
-        //             allUsers: users,
-        //             allTeams: allteams,
-        //             allTypes: alltypes,
-        //             allLabs: alllabs,
-        //             moment: moment
-        //         });
-        //     }
-        //     else
-        //     {
-        //         allResourceInfo = Null;
-        //     }
-        // });
-        db.queryallusersName(sess.results, function(err, queryResults)
+        db.queryResource(sess.results, function(err, queryResults)
         {
             if (queryResults)
             {
-                console.log(queryResults);
-                users = queryResults;
-                db.selectType(sess.results, function(err, queryResults)
+                res.render('resource',
                 {
-                    if (queryResults)
-                    {
-                        alltypes = queryResults;
-                        db.selectLab(sess.results, function(err, queryResults)
-                        {
-                            if (queryResults)
-                            {
-                                alllabs = queryResults;
-                                db.selectTeam(sess.results, function(err, queryResults)
-                                {
-                                    if (queryResults)
-                                    {
-                                        allteams = queryResults;
-                                        db.queryResource(sess.results, function(err, queryResults)
-                                        {
-                                            if (queryResults)
-                                            {
-                                                res.render('resource',
-                                                {
-                                                    allResourceInfo: queryResults,
-                                                    allUsers: users,
-                                                    allTeams: allteams,
-                                                    allTypes: alltypes,
-                                                    allLabs: alllabs,
-                                                    moment: moment,
-                                                    result:sess.results
-                                                });
-                                            }
-                                            else
-                                            {
-                                                allResourceInfo = Null;
-                                            }
-                                        });
-                                    }
-                                    else
-                                    {
-                                        allteams = Null;
-                                    }
-                                });
-
-                            }
-                            else
-                            {
-                                alllabs = Null;
-                            }
-                        });
-                    }
-                    else
-                    {
-                        alltypes = Null;
-                    }
-                })
+                    allResourceInfo: queryResults,
+                    moment: moment,
+                    result: sess.results
+                });
             }
             else
             {
-                users = Null;
+                allResourceInfo = Null;
             }
         });
     }
@@ -160,7 +41,6 @@ router.get('/', function(req, res, next)
     {
         res.redirect('/login');
     }
-
 });
 router.get('/delete/:id', function(req, res, next)
 {
@@ -172,11 +52,22 @@ router.get('/delete/:id', function(req, res, next)
         {
             if (!err)
             {
-                res.redirect('/resource');
+                db.deleteDetail(resourceId, function(err, queryResults)
+                {
+                    if (!err)
+                    {
+                        res.redirect('/resource');
+                    }
+                    else
+                    {
+                        res.send(err);
+                    }
+                });
+
             }
             else
             {
-                res.send(queryResults);
+                res.send(err);
             }
         });
     }
@@ -208,7 +99,14 @@ router.post('/add', function(req, res, next)
         {
             if (!err)
             {
-                res.redirect('/resource');
+                var detailInfo = {
+                    id: queryResults.insertId,
+                    name: resourceInfo.name,
+                }
+                db.addDetail(detailInfo, function(err, queryResults)
+                {
+                    res.redirect('/resource');
+                });
             }
             else
             {
@@ -246,7 +144,23 @@ router.post('/update', function(req, res, next)
         {
             if (!err)
             {
-                res.redirect('/resource');
+                var detailInfo = {
+                    id: queryResults.insertId,
+                    name: resourceInfo.name,
+                    type: resourceInfo.type,
+                }
+                db.updatePartDetail(detailInfo, function(err, queryResults)
+                {
+                    if (!err)
+                    {
+                        res.redirect('/resource');
+                    }
+                    else
+                    {
+                        res.send(queryResults);
+                    }
+                });
+
             }
             else
             {

@@ -1,9 +1,9 @@
 var express = require('express');
 var db = require('../lib/database');
 var router = express.Router();
-exports.findAllLab = function findAllLab(req,res)
+exports.findAllLab = function findAllLab(req, res)
 {
-	var sess = req.session;
+    var sess = req.session;
     if (sess.results)
     {
 
@@ -11,7 +11,7 @@ exports.findAllLab = function findAllLab(req,res)
         {
             if (queryResults)
             {
-            	res.send(queryResults);
+                res.send(queryResults);
             }
             else
             {
@@ -25,9 +25,9 @@ exports.findAllLab = function findAllLab(req,res)
     }
 }
 
-exports.deleteLab = function deleteLab(req,res)
+exports.deleteLab = function deleteLab(req, res)
 {
-	var sess = req.session;
+    var sess = req.session;
     if (sess.results)
     {
         var labId = req.params.id;
@@ -35,7 +35,7 @@ exports.deleteLab = function deleteLab(req,res)
         {
             if (!err)
             {
-            	console.log(queryResults + 'Delete');
+                console.log(queryResults + 'Delete');
                 res.send(req.body);
             }
             else
@@ -50,17 +50,17 @@ exports.deleteLab = function deleteLab(req,res)
     }
 
 }
-exports.findAllTeams = function findAllTeams(req,res)
+exports.findAllTeams = function findAllTeams(req, res)
 {
-	var sess = req.session;
-	if (sess.results)
+    var sess = req.session;
+    if (sess.results)
     {
 
         db.selectTeam(sess.results, function(err, queryResults)
         {
             if (!err)
             {
-            	res.send(queryResults);
+                res.send(queryResults);
             }
             else
             {
@@ -74,9 +74,9 @@ exports.findAllTeams = function findAllTeams(req,res)
     }
 }
 
-exports.deleteTeam = function deleteTeam(req,res)
+exports.deleteTeam = function deleteTeam(req, res)
 {
-	    var sess = req.session;
+    var sess = req.session;
     if (sess.results)
     {
         var teamId = req.params.id;
@@ -98,7 +98,7 @@ exports.deleteTeam = function deleteTeam(req,res)
     }
 }
 
-exports.findAllTypes = function findAllTypes(req,res)
+exports.findAllTypes = function findAllTypes(req, res)
 {
     var sess = req.session;
     var allTypeInfo;
@@ -109,14 +109,14 @@ exports.findAllTypes = function findAllTypes(req,res)
         {
             if (queryResults)
             {
-            	res.send(queryResults);
+                res.send(queryResults);
             }
             else
             {
                 res.send(err);
             }
         });
-       // console.log(allTypeInfo);
+        // console.log(allTypeInfo);
     }
     else
     {
@@ -202,7 +202,7 @@ exports.deleteResource = function deleteResource(req, res)
 
 }
 
-exports.findAllTemplate = function findAllTemplate(req,res)
+exports.findAllTemplate = function findAllTemplate(req, res)
 {
     var sess = req.session;
     var allTemplateInfo;
@@ -212,7 +212,7 @@ exports.findAllTemplate = function findAllTemplate(req,res)
         {
             if (queryResults)
             {
-            	res.send(queryResults);
+                res.send(queryResults);
             }
             else
             {
@@ -231,6 +231,7 @@ exports.deleteTemplate = function deleteTemplate(req, res)
     var sess = req.session;
     if (sess.results)
     {
+
         var labId = req.params.id;
         db.deleteTemplate(labId, function(err, queryResults)
         {
@@ -248,5 +249,52 @@ exports.deleteTemplate = function deleteTemplate(req, res)
     {
         res.redirect('/login');
     }
+}
 
+exports.selectServerId = function selectServerId(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var userInfo = sess.results;
+        db.selectServerId(userInfo, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err + queryResults);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.findAllUsers = function findAllUsers(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var userInfo = sess.results;
+        db.queryallusers(userInfo, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err + queryResults);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
 }

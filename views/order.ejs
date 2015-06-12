@@ -22,10 +22,10 @@
 <script type="text/javascript" src="app/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="/app/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 <link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
-  
+
 <!-- jQuery -->
 <!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
-  
+
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
 <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
@@ -42,8 +42,8 @@
       <script>
 
       $(document).ready( function () {
-    $('#mytable').DataTable();
-} );
+        $('#mytable').DataTable();
+      } );
 
       $(function(){
         $('button#Edit').on('click', function(){
@@ -58,14 +58,14 @@
           var teamId = $(event.target).closest("tr").find("#teamId").text();
 
 
-$.getJSON("http://localhost:3000/api/teams", function(data){
-  var listItems;
-  $.each(data, function(i,val){
+          $.getJSON("http://localhost:3000/api/teams", function(data){
+            var listItems;
+            $.each(data, function(i,val){
   //  console.log(val.name);
-    listItems += "<option value='" + val.id+ "'>" + val.name + "</option>";
-  });
-  $("#inputTeam").html(listItems);
+  listItems += "<option value='" + val.id+ "'>" + val.name + "</option>";
 });
+            $("#inputTeam").html(listItems);
+          });
           $(".modal-title").text("Edit order");
           $("#modalform").attr("action","order/update");
           $("#inputCategory").val(category);
@@ -75,36 +75,35 @@ $.getJSON("http://localhost:3000/api/teams", function(data){
           $("#inputOrder").val(order);
           $('#inputDate').val(date);
 
-          $('#inputTeam').val(teamId);
-          $('#inputComment').val(comment);
-          $('#inputId').val(id);
-        });
+        //  $('#inputTeam').val(teamId);
+        $('#inputComment').val(comment);
+        $('#inputId').val(id);
+      });
 });
-      $(function(){
-        $('button#Add').on('click', function(){
-          $.getJSON("http://localhost:3000/api/teams", function(data){
-  var listItems;
-  $.each(data, function(i,val){
+$(function(){
+  $('button#Add').on('click', function(){
+    $.getJSON("/api/teams", function(data){
+      var listItems;
+      $.each(data, function(i,val){
   //  console.log(val.name);
-    listItems += "<option value='" + val.id+ "'>" + val.name + "</option>";
-  });
-  $("#inputTeam").html(listItems);
+  listItems += "<option value='" + val.id+ "'>" + val.name + "</option>";
 });
-          $(".modal-title").text("Add order");
-          $("#modalform").attr("action","order/add");
-          console.log("hh");
-          $("#inputCategory").val("");
-          $("#inputVendor").val("");
-          $("#inputQuantity").val("");
-          $("#inputUnitPrice").val("");
-          $("#inputOrder").val("");
-          $('#inputDate').val("");
+      $("#inputTeam").html(listItems);
+    });
+    $(".modal-title").text("Add order");
+    $("#modalform").attr("action","order/add");
+    $("#inputCategory").val("");
+    $("#inputVendor").val("");
+    $("#inputQuantity").val("");
+    $("#inputUnitPrice").val("");
+    $("#inputOrder").val("");
+    $('#inputDate').val("");
 
-          $('#inputTeam').val("");
-          $('#inputComment').val("");
-          $('#inputId').val("");
-        });
-        });
+    $('#inputTeam').val("");
+    $('#inputComment').val("");
+    $('#inputId').val("");
+  });
+});
 </script>
 
 </head>
@@ -119,9 +118,9 @@ $.getJSON("http://localhost:3000/api/teams", function(data){
       <button type="submit" class="btn btn-lg btn-primary">Search</button>
     </form> -->
     <form method="post" enctype="multipart/form-data" action="/order/file-upload">
-  <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
-  <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
-</form>
+      <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
+      <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
+    </form>
     <div class="table-responsive">
       <table id = "mytable" class="display">
         <thead>

@@ -21,7 +21,9 @@ var lab = require('./routes/lab');
 var type = require('./routes/type');
 var template = require('./routes/template');
 var api = require('./routes/api');
+var detail = require('./routes/detail');
 var app = express(); 
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,6 +53,7 @@ app.use('/team',team);
 app.use('/lab',lab);
 app.use('/type',type);
 app.use('/template',template);
+app.use('/detail',detail);
 
 //api of the labs
 app.get('/api/labs',api.findAllLab);
@@ -66,12 +69,14 @@ app.get('/api/types',api.findAllTypes);
 app.delete('/api/types/:id',api.deleteType);
 
 //api for deleting user
+app.get('/api/users/',api.findAllUsers);
 app.delete('/api/user/:id',api.deleteUser);
 
 
 //api for deleting resource
 app.delete('/api/resource/:id',api.deleteResource);
-
+app.get('/api/serverId',api.selectServerId);
+//api for template operation
 app.get('/api/templates',api.findAllTemplate);
 app.delete('api/template:id',api.deleteTemplate);
 
