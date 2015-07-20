@@ -84,6 +84,11 @@ router.post('/add', function(req, res, next)
     var sess = req.session;
     if (sess.results)
     {
+        var serverId = req.body.serverId;
+        if (!serverId.trim()) 
+        {
+            serverId = -1;
+        }
         var resourceInfo = {
             name: req.body.name,
             template: req.body.template,
@@ -91,7 +96,7 @@ router.post('/add', function(req, res, next)
             manufacturer: req.body.manufacturer,
             model: req.body.model,
             size: req.body.size,
-            serverId: req.body.serverId,
+            serverId: serverId,
             userId: req.body.userId,
             teamId: req.body.teamId,
             location: req.body.location,

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <!-- saved from url=(0040)http://getbootstrap.com/examples/signin/ -->
 <html lang="en">
 
@@ -56,7 +56,6 @@
             var listItems;
             $.each(data, function(i, val)
             {
-                //  console.log(val.name);
                 listItems += "<option value='" + val.name + "'>" + val.name + "</option>";
             });
             $("#inputTeam").html(listItems);
@@ -100,7 +99,6 @@
                 var listItems;
                 $.each(data, function(i, val)
                 {
-                    //  console.log(val.name);
                     listItems += "<option value='" + val.name + "'>" + val.name + "</option>";
                 });
                 $("#inputTeam").html(listItems);
@@ -154,15 +152,6 @@
     <% include nav %>
         <div class="container">
             <h1>Order Managment</h1>
-            <!--     <form class="form-search">
-
-      <input type="text" class="input-medium search-query">
-      <button type="submit" class="btn btn-lg btn-primary">Search</button>
-    </form> -->
-            <!--     <form method="post" enctype="multipart/form-data" action="/order/file-upload">
-      <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
-      <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
-    </form> -->
             <div class="table-responsive">
                 <table id="mytable" class="display">
                     <thead>
@@ -184,36 +173,32 @@
                         <% allOrderInfo.forEach(function(orderInfo) { %>
                             <tr>
                                 <td id="id">
-                                    <%=o rderInfo.id %>
+                                    <%=orderInfo.id %>
                                 </td>
                                 <td id="category">
-                                    <%=o rderInfo.category %>
+                                    <%=orderInfo.category %>
                                 </td>
                                 <td class="hidden-phone" id="vendor">
-                                    <%=o rderInfo.vendor %>
+                                    <%=orderInfo.vendor %>
                                 </td>
                                 <td class="hidden-phone" id="quantity">
-                                    <%=o rderInfo.quantity %>
+                                    <%=orderInfo.quantity %>
                                 </td>
                                 <td class="hidden-phone" id="unitprice">
-                                    <%=o rderInfo.unitprice %>
+                                    <%=orderInfo.unitprice %>
                                 </td>
                                 <td class="hidden-phone" id="order">
-                                    <%=o rderInfo.order %>
+                                    <%=orderInfo.order %>
                                 </td>
                                 <td class="hidden-phone" id="date">
-                                    <%=m oment(orderInfo.date).format( 'YYYY-MM-DD HH:MM:SS') %>
+                                    <%=moment(orderInfo.date).format( 'YYYY-MM-DD HH:MM:SS') %>
                                 </td>
                                 <td class="hidden-phone" id="comment">
-                                    <%=o rderInfo.comment %>
+                                    <%=orderInfo.comment %>
                                 </td>
                                 <td class="hidden-phone" id="teamId">
-                                    <%=o rderInfo.teamId %>
+                                    <%=orderInfo.teamId %>
                                 </td>
-                                <!--             <td class="hidden-phone">
-              <div class="btn-group"><a href="\order\delete\<%= orderInfo.id %>" class="btn btn-primary">Delete</a>
-              </div>
-            </td> -->
                                 <td class="hidden-phone">
                                     <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
                             </tr>
