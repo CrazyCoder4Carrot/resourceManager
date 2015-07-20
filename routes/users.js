@@ -68,17 +68,6 @@ router.get('/', function(req, res, next)
             }
         });
 
-        // db.selectAllRoles(sess.results, function(err, queryResults)
-        // {
-        //     if (queryResults)
-        //     {
-        //         allRoles = queryResults;
-        //     }
-        //     else
-        //     {
-        //         allRoles = null;
-        //     }
-        // });
 
 
     }

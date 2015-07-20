@@ -17,7 +17,8 @@ var router = express.Router();
 router.get('/', function(req, res, next)
 {
     var sess = req.session;
-    var allUsersInfo;
+    console.log(sess);
+    var allResourceInfo;
     if (sess.results)
     {
         db.queryResource(sess.results, function(err, queryResults)
@@ -56,7 +57,7 @@ router.get('/delete/:id', function(req, res, next)
                 {
                     if (!err)
                     {
-                        res.redirect('/resource');
+                        res.redirect('/asset');
                     }
                     else
                     {
@@ -85,7 +86,10 @@ router.post('/add', function(req, res, next)
     {
         var resourceInfo = {
             name: req.body.name,
+            template: req.body.template,
             type: req.body.type,
+            manufacturer: req.body.manufacturer,
+            model: req.body.model,
             size: req.body.size,
             serverId: req.body.serverId,
             userId: req.body.userId,
@@ -94,6 +98,7 @@ router.post('/add', function(req, res, next)
             position: req.body.position,
             createtime: req.body.createtime,
             discard: req.body.discard,
+            number:req.body.number
         }
         db.insertResource(resourceInfo, function(err, queryResults)
         {
@@ -102,10 +107,11 @@ router.post('/add', function(req, res, next)
                 var detailInfo = {
                     id: queryResults.insertId,
                     name: resourceInfo.name,
+                    type:resourceInfo.type
                 }
                 db.addDetail(detailInfo, function(err, queryResults)
                 {
-                    res.redirect('/resource');
+                    res.redirect('/asset');
                 });
             }
             else
@@ -125,11 +131,14 @@ router.post('/update', function(req, res, next)
     var sess = req.session;
     if (sess.results)
     {
-
+        console.log(req.body.manufacturer);
         var resourceInfo = {
             id: req.body.id,
             name: req.body.name,
+            template: req.body.template,
             type: req.body.type,
+            manufacturer: req.body.manufacturer,
+            model: req.body.model,
             size: req.body.size,
             serverId: req.body.serverId,
             userId: req.body.userId,
@@ -138,6 +147,7 @@ router.post('/update', function(req, res, next)
             position: req.body.position,
             createtime: req.body.createtime,
             discard: req.body.discard,
+            number:req.body.number,
         }
         console.log(resourceInfo);
         db.updateResource(resourceInfo, function(err, queryResults)
@@ -145,15 +155,16 @@ router.post('/update', function(req, res, next)
             if (!err)
             {
                 var detailInfo = {
-                    id: queryResults.insertId,
+                    id: resourceInfo.id,
                     name: resourceInfo.name,
                     type: resourceInfo.type,
                 }
+                console.log(detailInfo);
                 db.updatePartDetail(detailInfo, function(err, queryResults)
                 {
                     if (!err)
                     {
-                        res.redirect('/resource');
+                        res.redirect('/asset');
                     }
                     else
                     {
@@ -205,19 +216,23 @@ router.post('/file-upload', function(req, res, next)
         console.log("count is " + obj[0].data.length);
         for (var i = 1; i < obj[0].data.length; i++)
         {
-            var date = new Date(1900, 0, obj[0].data[i][8] - 1);
+            var date = new Date(1900, 0, obj[0].data[i][11] - 1);
             console.log(date);
             var resourceInfo = {
                 name: obj[0].data[i][0].toString(),
-                type: obj[0].data[i][1].toString(),
-                size: obj[0].data[i][2].toString(),
-                serverId: obj[0].data[i][3].toString(),
-                userId: obj[0].data[i][4].toString(),
-                teamId: obj[0].data[i][5].toString(),
-                location: obj[0].data[i][6].toString(),
-                position: obj[0].data[i][7].toString(),
+                template: obj[0].data[i][1].toString(),
+                type: obj[0].data[i][2].toString(),
+                manufacturer: obj[0].data[i][3].toString(),
+                model: obj[0].data[i][4].toString(),
+                size: obj[0].data[i][5].toString(),
+                serverId: obj[0].data[i][6].toString(),
+                userId: obj[0].data[i][7].toString(),
+                teamId: obj[0].data[i][8].toString(),
+                location: obj[0].data[i][9].toString(),
+                position: obj[0].data[i][10].toString(),
                 createtime: date.toISOString().slice(0, 19).replace('T', ' '),
-                discard: obj[0].data[i][9].toString()
+                number: obj[0].data[i][12].toString(),
+                discard: obj[0].data[i][13].toString()
             }
             db.insertResource(resourceInfo, function(err, queryResults)
             {
@@ -237,26 +252,37 @@ router.post('/file-upload', function(req, res, next)
 
 });
 
-//add thansfer
+//add transfer
 router.post('/addtrans', function(req, res, next)
 {
     var sess = req.session;
     var date = new Date();
-    console.log(sess);
+
     if (sess.results)
     {
         var resourceInfo = {
             assetId: req.body.id,
             type: req.body.type,
-            source: sess.results.username,
+            source: req.body.source,
             dest: req.body.dest,
             date: date.toISOString().slice(0, 19).replace('T', ' ')
         }
+            console.log(resourceInfo);
         db.addChange(resourceInfo, function(err, queryResults)
         {
             if (!err)
             {
-                res.redirect('/resource');
+                db.updateResourceUser(resourceInfo,function(err, queryResults)
+                {
+                    if(!err)
+                    {
+                        res.redirect('/asset');
+                    }
+                    else
+                    {
+                        res.send(queryResults);
+                    }
+                });
             }
             else
             {

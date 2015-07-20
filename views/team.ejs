@@ -7,7 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="img/favicon.ico">
-<title>User Management</title>
+<title>Team Management</title>
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src = "js/bootstrap.js"></script>
 <!-- Bootstrap core CSS -->
@@ -71,9 +71,6 @@
           <table id = "mytable2"  class="display">
             <thead>
               <tr>
-                <th >
-                 <!--  <input class="no-margin" type="checkbox"> -->
-                </th>
                 <th >Id</th>
                 <th >Name</th>
                 <th >Action</th>
@@ -84,17 +81,17 @@
 
               <% allTeamInfo.forEach(function(teamInfo) { %>
               <tr>
-                <td>
-                  <input type="checkbox">
-                </td>
                 <td id="id"><%= teamInfo.id %></td>
                 <td id="username"><%= teamInfo.name %></td>
+                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
+                </td>
+
+
                 <td >
                 <div class="btn-group"><a href="\team\delete\<%= teamInfo.id %>" class="btn btn-primary">Delete</a>
                   </div>
                 </td>
-                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-                </td>
+
               </tr>
               <% }); %>
             </tbody>
@@ -104,7 +101,7 @@
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
             Add
           </button>
-          <button class="btn btn-lg btn-primary" type="submit">Delete</button>
+<!--           <button class="btn btn-lg btn-primary" type="submit">Delete</button> -->
         </div>
 
         <!-- Modal -->
@@ -124,41 +121,7 @@
                     <input type="text" id="inputName" placeholder="Name" name="name">
                   </div>
                 </div>
-<!--                 <div class="control-group">
-                  <label class="control-label" for="inputPassword">Password</label>
-                  <div class="controls">
-                    <input type="text" id="inputPassword" placeholder="Password" name="password">
-                  </div>
-                </div>
 
-                <div class="control-group">
-                  <label class="control-label" for="inputTeam">team</label>
-                  <div class="controls">
-                    <select name="teamid" id="inputTeam">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <label class="control-label" for="inputEmail">Email Address</label>
-                  <div class="controls">
-                    <input type="text" id="inputEmail" placeholder="Email Address" name="emailaddress">
-                  </div>
-                </div> -->
-
-<!--                 <div class="control-group">
-                  <label class="control-label" for="inputEmail">Role</label>
-                  <div class="controls">
-                    <select name="role" id="inputRole">
-                      <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                      </select>
-                    </div>
-                  </div> -->
                   <div class="modal-footer">
                     <input type="submit" class="btn btn-primary" value="Save changes"></input>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

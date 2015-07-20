@@ -8,84 +8,175 @@
 <meta name="author" content="">
 <link rel="icon" href="img/favicon.ico">
 <title>Asset Management</title>
+<!-- <script src="http://datatables.net/release-datatables/media/js/jquery.js"></script> -->
 <script src="/bower_components/jquery/dist/jquery.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Bootstrap core CSS -->
+
+
+<!-- <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script> -->
+<script type="text/javascript" src="/app/bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="app/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+
+<link rel="stylesheet" href="/app/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/extensions/TableTools/css/dataTables.tableTools.css">
 <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
 <link href="css/signin.css" rel="stylesheet">
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
 
-<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="/app/bower_components/moment/min/moment.min.js"></script>
-<script type="text/javascript" src="app/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<link rel="stylesheet" href="/app/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/extensions/FixedColumns/js/dataTables.fixedColumns.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
-  
-<!-- jQuery -->
-<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/extensions/FixedColumns/css/dataTables.fixedColumns.css">
+
 <script>
-      $(document).ready( function () {
-    $('#mytable').DataTable();
 
-} );
-$('#mytable').dataTable( {
-  "autoWidth": true
-} );
+  $(document).ready(function() {
 
+    $('#mytable').DataTable( {
+        dom: 'T<"clear">lfrtip',
+        tableTools: {
+            "sSwfPath": "/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+            "sRowSelect": "multi",
+            "aButtons": [ "select_all", "select_none",
+            "copy",
+                "print",
+                "csv", 
+                "xls", 
+                "pdf"
+                 ]
+        },
 
-    $.getJSON("/api/labs", function(data){
-      var listItems;
-      $.each(data, function(i,val){
-  //  console.log(val.name);
-  listItems += "<option value='" + val.id+ "'>" + val.name + "</option>";
-});
-      $("#inputLocation").html(listItems);
-    });
-    $.getJSON("/api/types", function(data){
-      var listItems;
-      $.each(data, function(i,val){
-  //  console.log(val.name);
-  listItems += "<option value='" + val.name+ "'>" + val.name + "</option>";
-});
-      $("#inputType").html(listItems);
-    });
-
-    $.getJSON("/api/teams", function(data){
-      var listItems;
-      $.each(data, function(i,val){
-  //  console.log(val.name);
-  listItems += "<option value='" + val.name+ "'>" + val.name + "</option>";
-});
-      $("#inputTeamId").html(listItems);
-    });
-
-        $.getJSON("/api/users", function(data){
-      var listItems;
-      $.each(data, function(i,val){
-  //  console.log(val.name);
-  listItems += "<option value='" + val.username+ "'>" + val.username + "</option>";
-});
-      //$("#inputUserId").html(listItems);
-      $("#inputUserName").html(listItems);
-    });
-
+    } );
 $.ajax({
     url:'/api/users',
     type:'GET',
     dataType: 'json',
     success: function( data ) {
-      console.log(data);
         $.each(data, function(i, value) {
             $('#inputUserId').append($('<option>').text(value.username).attr('value', value.username));
         });
     }
 });
+
+$.ajax({
+    url:'/api/servers',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputServerId').append($('<option>').text(value.id).attr('value', value.id));
+        });
+    }
+});
+
+$.ajax({
+    url:'/api/templates',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+          console.log(value.name);
+            $('#inputTemplate').append($('<option>').text(value.name).attr('value', value.name));
+        });
+    }
+});
+
+$.ajax({
+    url:'/api/types',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputType').append($('<option>').text(value.name).attr('value', value.name));
+        });
+    }
+});
+$.ajax({
+    url:'/api/manu',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputManufacturer').append($('<option>').text(value.name).attr('value', value.name));
+        });
+    }
+});
+$.ajax({
+    url:'/api/model',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputModel').append($('<option>').text(value.name).attr('value', value.name));
+        });
+    }
+});
+
+
+$.ajax({
+    url:'/api/size',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputSize').append($('<option>').text(value.name).attr('value', value.name));
+            
+        });
+    }
+});
+
+$.ajax({
+    url:'/api/teams',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputTeamId').append($('<option>').text(value.name).attr('value', value.name));
+            
+        });
+    }
+});
+$.ajax({
+    url:'/api/position',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputPosition').append($('<option>').text(value.name).attr('value', value.name));
+            
+        });
+    }
+});
+
+$.ajax({
+    url:'/api/labs',
+    type:'GET',
+    dataType: 'json',
+    success: function( data ) {
+        $.each(data, function(i, value) {
+            $('#inputLocation').append($('<option>').text(value.name).attr('value', value.name));
+        });
+    }
+});
+
+  $('.detailclass').on('click', function(e){
+    $('#DetailModal').modal('show');
+    console.log("enter ");
+    var id = $(event.target).closest('tr').find('#id').text();
+    console.log(id);
+getDetailInfo(id);
+e.preventDefault();
+        });
+
+} );     
 
 function setCheckedValue(radioObj, newValue) {
   if(!radioObj)
@@ -104,31 +195,52 @@ function setCheckedValue(radioObj, newValue) {
 }
 $(function(){
   $('button#Edit').on('click', function(){
-    var id = $(event.target).closest('tr').find('#id').text();
-    var name = $(event.target).closest('tr').find('#name').text();
-    var type = $(event.target).closest('tr').find('#type').text(); 
-    var size = $(event.target).closest('tr').find("#size").text();
-    var serverId = $(event.target).closest('tr').find("#serverId").text();
-    var userId = $(event.target).closest("tr").find("#userId").text();
-    var teamId = $(event.target).closest("tr").find("#teamId").text();
-    var location = $(event.target).closest("tr").find("#location").text();
-    var position = $(event.target).closest("tr").find("#position").text();
-    var createtime =$(event.target).closest("tr").find("#createtime").text();
-    var discard = $(event.target).closest("tr").find("#discard").text();
-          $(".modal-title").text("Edit asset");
-          $("#modalform").attr("action","resource/update");
-          $("#inputName").val(name);
-          $("#inputType").val(type.toString());
-          $("#inputSize").val(size);
-          $("#inputServerId").val(serverId);
-          $("#inputUserId").val(userId);
-          $('#inputTeamId').val(teamId);
-          $('#inputLocation').val(location);
-          $('#inputPosition').val(position);
-          $('#inputCreateTime').val(createtime);
-         var radiobutton = $('#inputDiscard');
-          setCheckedValue(document.forms['modalform'].elements['inputDiscard'],discard)
-          $("#inputId").val(id);
+     var oTT = TableTools.fnGetInstance( 'mytable' );
+    var aData = oTT.fnGetSelectedData();
+    var rows = oTT.fnGetSelected();
+    console.log(aData[0]);
+    console.log("lenght is " + aData.length);
+    if(aData.length == 1)
+    {
+      var rowData = aData[0];
+      var id = rowData[0];
+      var name = rowData[1];
+      var template = rowData[2];
+      var type = rowData[3];
+      var manufacturer = rowData[4];
+      var model =rowData[5];
+      var size = rowData[6];
+      var serverId = rowData[7];
+      var userId = rowData[8];
+      var teamId = rowData[9];
+      var location = rowData[10];
+      var position = rowData[11];
+      var createtime =rowData[12];
+      var number = rowData[13];
+      var discard = rowData[14];
+      var html = $.parseHTML(name);
+      console.log(html[0].text);
+      console.log(model+" "+template+ " "+size+" "+manufacturer);
+      $(".modal-title").text("Edit asset");
+      $("#modalform").attr("action","asset/update");
+      $("#inputName").val(html[0].text);
+      $("#inputTemplate").val(template);
+      $("#inputModel").val(model);
+      $("#inputManufacturer").val(manufacturer);
+      $("#inputType").val(type.toString());
+      $("#inputSize").val(size);
+      $("#inputServerId").val(serverId);
+      $("#inputUserId").val(userId);
+      $('#inputTeamId').val(teamId);
+      $('#inputLocation').val(location);
+      $('#inputPosition').val(position);
+      $('#inputCreateTime').val(createtime);
+      $('#inputNumber').val(number);
+      var radiobutton = $('#inputDiscard');
+      setCheckedValue(document.forms['modalform'].elements['inputDiscard'],discard)
+      $("#inputId").val(id);
+    }
+
         });
 });
 
@@ -136,10 +248,36 @@ $(function(){
   $('button#Transfer').on('click', function(){
     var id = $(event.target).closest('tr').find('#id').text();
     var type = $(event.target).closest('tr').find('#type').text(); 
+    var userId = $(event.target).closest("tr").find("#userId").text();
     $("#assetId").val(id);
     $("#assetType").val(type);
+    $("#sourceName").val(userId);
+    $.getJSON("/api/users", function(data){
+      var listItems;
+      $.each(data, function(i,val){
+        listItems += "<option value='" + val.username+ "'>" + val.username + "</option>";
+      });
+      $("#inputUserName").html(listItems);
+    });
         });
 });
+
+$(function(){
+    $('button#TransferOne').on('click', function(){
+    var id = $("#assetId").val();
+    var type = $("#assetType").val(); 
+    var source = $("#sourceName").val();
+    var dest = $('#inputUserName').val();
+    var changeInfo = 
+    {
+      id:id,
+      type:type,
+      source:source,
+      dest:dest
+    }
+    putChange(changeInfo); 
+});
+  });
 function getNowFormatDate() {
     var date = new Date();
     var seperator1 = "-";
@@ -160,24 +298,196 @@ function getNowFormatDate() {
       $(function(){
         $('button#Add').on('click', function(){
           $(".modal-title").text("Add asset");
-          $("#modalform").attr("action","resource/add");
+          $("#modalform").attr("action","asset/add");
           $("#inputName").val("");
-          $("#inputSize").val("");
-          //$("#inputServerId").val("");
+          $("#inputNumber").val("");
           $('#inputType option:eq(0)').attr('selected','selected'); 
           $('#inputServerId option:eq(0)').attr('selected','selected'); 
           $('#inputUserId option:eq(0)').attr('selected','selected'); 
-          $('#inputTeamId option:eq(0)').attr('selected','selected'); 
           $('#inputLocation option:eq(0)').attr('selected','selected'); 
-          $('#inputPosition').val("");
+          $('#inputPosition option:eq(0)').attr('selected','selected'); 
+          $('#inputSize option:eq(0)').attr('selected','selected'); 
           var myDate = new Date();
           var mytime=myDate.toLocaleString();     //获取当前时间
           var formattime = moment(mytime).format('YYYY-MM-DD HH:MM:SS')
-          console.log(formattime);
           $('#inputCreateTime').val(formattime);
-          $('#inputDiscard').val("");
+          $("input[name=Discard][value='0']").prop("checked",true);
+          setCheckedValue(document.forms['modalform'].elements['inputDiscard'],0)
         });
         });
+</script>
+<script>
+function getTemplateInfo(val) {
+    var templateOpt = $("#inputTemplate :selected").text();
+    console.log(val);
+    if(templateOpt == "Select Template")
+    {
+        $('#inputModel option:eq(0)').attr('selected','selected'); 
+        $('#inputType option:eq(0)').attr('selected','selected'); 
+        $('#inputManufacturer option:eq(0)').attr('selected','selected'); 
+        $('#inputSize option:eq(0)').attr('selected','selected'); 
+    }
+    else
+    {
+      $.ajax({
+        type: "GET",
+        url: "/api/templates/" +val,
+        success: function( data ) {
+          console.log(data[0]);
+          $('#inputModel').val(data[0].model);
+          $('#inputType').val(data[0].type);
+        $('#inputManufacturer').val(data[0].manufacturer);
+        $('#inputSize').val(data[0].size);
+    }
+  });
+    }
+
+}
+
+
+
+function getDetailInfo(id) {
+  $.ajax({
+  type: "GET",
+  url: "/api/details/" +id,
+  success: function( data ) {
+    console.log(data[0]);
+    $('#DetailName').text(data[0].name);
+    $('#DetailType').text(data[0].type);
+    $('#DetailBarcode').text(data[0].barcode);
+    $('#DetailIP').text(data[0].ip);
+    $('#DetailDescription').text(data[0].description);
+    }
+  });
+}
+function putChange(ChangeInfo)
+{
+          $.ajax({
+          url: "/api/transfer/",
+          type: 'POST',
+          data: 
+          {
+            "id":ChangeInfo.id,
+            "type":ChangeInfo.type,
+            "source":ChangeInfo.source,
+            "dest":ChangeInfo.dest
+          },
+          success: function(result) 
+          {
+                      $.ajax({
+          url: "/api/asset/" +ChangeInfo.id,
+          type: 'PUT',
+          data: 
+          {
+            "dest":ChangeInfo.dest
+          },
+          success: function(result) 
+          {
+             location.reload();
+          }
+        });
+          }
+        });
+}
+function putBatchChange(ChangeInfo,count)
+{
+          $.ajax({
+          url: "/api/transfer/",
+          type: 'POST',
+          data: 
+          {
+            "id":ChangeInfo.id,
+            "type":ChangeInfo.type,
+            "source":ChangeInfo.source,
+            "dest":ChangeInfo.dest
+          },
+          success: function(result) 
+          {
+                      $.ajax({
+          url: "/api/asset/" +ChangeInfo.id,
+          type: 'PUT',
+          data: 
+          {
+            "dest":ChangeInfo.dest
+          },
+          success: function(result) 
+          {
+            transcount--;
+            if(transcount == 0)
+              location.reload();
+          }
+        });
+          }
+        });
+}
+var transcount = 0 ;
+$(function(){
+  $('button#Delete').on('click', function(){
+var oTT = TableTools.fnGetInstance( 'mytable' );
+    var aSelectedTrs = oTT.fnGetSelectedData();
+    if(aSelectedTrs != null)
+    $.each(aSelectedTrs, function(i, value) 
+      {
+        console.log(value[0]);
+        $.ajax({
+  url: "/api/details/" +value[0],
+    type: 'DELETE',
+    success: function(result) {
+      console.log("delete detail");
+    }
+});
+        $.ajax({
+  url: "/api/asset/" +value[0],
+    type: 'DELETE',
+    success: function(result) {
+      console.log("delete resource");
+       location.reload();
+    }
+    
+});
+      }
+      )
+});
+});
+
+
+$(function(){
+  $('button#TransferAll').on('click', function(){
+        $.getJSON("/api/users", function(data){
+      var listItems;
+      $.each(data, function(i,val){
+        listItems += "<option value='" + val.username+ "'>" + val.username + "</option>";
+      });
+      $("#transferAllInputUserName").html(listItems);
+    });
+
+});
+});
+$(function(){
+    $('button#transferAllSubmit').on('click', function(){
+    var oTT = TableTools.fnGetInstance( 'mytable' );
+    var aSelectedTrs = oTT.fnGetSelectedData();
+    if(aSelectedTrs != null)
+    var id = $("#assetId").val();
+    var type = $("#assetType").val(); 
+    var source = $("#sourceName").val();
+    var dest = $('#transferAllInputUserName').val();
+    console.log(aSelectedTrs.length);
+transcount = aSelectedTrs.length;
+    $.each(aSelectedTrs, function(i, value) 
+      {
+            var changeInfo = 
+    {
+      id:value[0],
+      type:value[3],
+      source:value[8],
+      dest:dest
+    }
+    console.log(changeInfo);
+    putBatchChange(changeInfo);
+      })
+});
+  });
 </script>
 </head>
 
@@ -185,81 +495,71 @@ function getNowFormatDate() {
   <% include nav %>
   <div class = "container">
     <h1>Asset Managment</h1>
-<!--     <form class="form-inline">
-      <select>
-        <option>All</option>
-        <option>Server</option>
-        <option>Switch</option>
-        <option>Memory</option>
-        <option>Disk</option>
-      </select>
-      <button type="submit" class="btn btn-primary btn-lg">Search</button>
-    </form> -->
-    <form method="post" enctype="multipart/form-data" action="/resource/file-upload">
+<!--     <form method="post" enctype="multipart/form-data" action="/asset/file-upload">
   <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
-  <input type="submit" class="btn btn-lg btn-primary" id="btnSub">
-</form>
+  <input type="submit" class="btn btn-primary" id="btnSub">
+</form> -->
     <div class="table-responsive">
-      <table id = "mytable"class="display" >
+      <table id = "mytable" class="display" cellspacing="0" width="100%" >
         <thead>
           <tr>
-            <th style="width:5%">
-            </th>
             <th style="width:5%" >Id</th>
             <th style="width:6%" >Name</th>
+            <th style="width:6%" >Template</th>
             <th style="width:5%" >Type</th>
+            <th style="width:6%" >Manufa</th>
+            <th style="width:6%" >Model</th>
             <th style="width:10%" >Size</th>
             <th style="width:10%" >Server</th>
             <th style="width:10%" >User</th>
             <th style="width:10%" >Team</th>
             <th style="width:10%" >Location</th>
             <th style="width:9%" >Position</th>
+            <th style="width:15%" >Number</th>
             <th style="width:15%" >Create Time</th>
             <th style="width:15%" >Discard</th>
-            <th style="width:5%"  >Del</th>
-            <th style="width:5%"  >Edit</th>
-            <th style="width:5%" >Trans</th>
+<!--             <th style="width:5%" >Trans</th> -->
           </tr>
         </thead>
         <tbody>
+          <%if(typeof allResourceInfo === 'undefined')%>
+          <%{%>
           <% allResourceInfo.forEach(function(resourceInfo) { %>
           <tr>
-           <td>
-             <input class="no-margin" type="checkbox">
-           </td>
            <td id="id"><%= resourceInfo.id %></td>
-           <td id="name"><%= resourceInfo.name %></td>
+           <td id="name">
+<a href="javascript:;"  id="Detail" class="detailclass"><%= resourceInfo.name %></a>
+            </td>
+           <td class="hidden-phone" id="template"><%= resourceInfo.template %></td>
            <td class="hidden-phone" id="type"><%= resourceInfo.type %></td>
+           <td class="hidden-phone" id="manufacturer"><%= resourceInfo.manufacturer %></td>
+           <td class="hidden-phone" id="model"><%= resourceInfo.model %></td>
            <td class="hidden-phone" id="size"><%= resourceInfo.size %></td>
            <td class="hidden-phone" id="serverId"><%= resourceInfo.serverId %></td>
            <td class="hidden-phone" id="userId"><%= resourceInfo.userId %></td>
            <td class="hidden-phone" id="teamId"><%= resourceInfo.teamId %></td>
            <td class="hidden-phone" id="location"><%= resourceInfo.location %></td>
            <td class="hidden-phone" id="position"><%= resourceInfo.position %></td>
+           <td class="hidden-phone" id="number"><%= resourceInfo.number %></td>
            <td class="hidden-phone" id="createtime"><%= moment(resourceInfo.createtime).format('YYYY-MM-DD HH:MM:SS')%></td>
            <td class="hidden-phone" id="discard"><%= resourceInfo.discard %></td>
-           <td class="hidden-phone">
-             <div class="btn-group"><a href="\resource\delete\<%= resourceInfo.id %>" class="btn btn-primary">Delete</a>
-             </div>
-           </td>
-           <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-             <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#TransferModal" id="Transfer">Transfer</a>
-             </td>
+<!--              <td class="hidden-phone"><button class="btn btn-primary" data-toggle="modal" data-target="#TransferModal" id="Transfer">Transfer</a>
+             </td> -->
            </tr>
            <% }); %>
-
-
+           <%}%>
 
          </tbody>
        </table>
      </div>
      <div class="form-actions">
-      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Add">
         Add
       </button>
-      <button class="btn btn-lg btn-primary" type="submit">Delete</button>
-      <button class="btn btn-lg btn-primary" type="submit" data-target="#TransferModal" id="Transfer">Transfer</button>
-    </div>
+      <button class="btn btn-primary" type="submit" id="Delete">Delete</button>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#TransferAllModal" id="TransferAll">Transfer</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</button>
+
 
 
     <!-- Edit Modal -->
@@ -271,69 +571,91 @@ function getNowFormatDate() {
             <h4 class="modal-title" id="myModalLabel">Add Asset</h4>
           </div>
           <div class="modal-body">
-            <form class="form-horizontal" action="/resource/add" method="post" id="modalform">
+            <form class="form-horizontal" action="/asset/add" method="post" id="modalform">
               <input type="hidden" id="inputId"  name="id">
-              <div class="control-group">
+              <table style="width:100%">
+  <tr>
+    <td>              <div class="control-group">
                 <label class="control-label" for="inputName">Name</label>
-                <div class="controls">
                   <input type="text" id="inputName" placeholder="Name" name="name">
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="inputType">Type</label>
-                <div class="controls">
-<!--                   <input type="text" id="inputType" placeholder="Type" name="type"> -->
+        
+              </div></td>
+    <td>     <div class="control-group">
+                  <label class="control-label" for="inputType">Template</label>
+                  <select  name="template" id="inputTemplate" onChange="getTemplateInfo(this.value)">
+                    <option>Select Template</option>
+                  </select>
+              </div></td> 
+  </tr>
+  <tr>
+    <td>     <div class="control-group">
+                  <label class="control-label" for="inputType">Type</label>
                   <select  name="type" id="inputType">
+                    <option>Select Type</option>
                   </select>
-                </div>
-              </div>
+              </div></td> 
+    <td>              <div class="control-group">
+             
+                  <label class="control-label" for="inputServerId">Manufacturer</label>
+                  <select  name="manufacturer" id="inputManufacturer">
+                    <option>Select Manufacturer</option>
+                  </select>
+              </div></td> 
+  </tr>
+    <tr>
+                  <td>              <div class="control-group">
+                <label class="control-label" for="inputUserId">Model</label>
+                  <select name="model" id="inputModel">
+                    <option>Select Model</option>
+                  </select>
 
-              <div class="control-group">
+              </div></td>
+                  <td>              <div class="control-group">
                 <label class="control-label" for="inputSize">Size</label>
-                <div class="controls">
-                  <input type="text" id="inputSize" placeholder="Size" name="size">
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="inputServerId">Server</label>
-                <div class="controls">
+                  <select id="inputSize" name="size">     
+                  <option>Select Size</option>        
+                  </select>
+              </div></td>
+  </tr>
+  <tr>
+        <td>              <div class="control-group">
+             
+                  <label class="control-label" for="inputServerId">Server</label>
                   <select  name="serverId" id="inputServerId">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
+                    <option value="-1">-1</option>
                   </select>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="inputUserId">User</label>
-                <div class="controls">
-                  <select name="userId" id="inputUserId">
-                  </select>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="inputTeamId">Team</label>
-                <div class="controls">
-                  <select  name="teamId" id="inputTeamId">
-                  </select>
-                </div>
-              </div>
+              </div></td> 
 
-              <div class="control-group">
+                  <td>              <div class="control-group">
+                <label class="control-label" for="inputUserId">User</label>
+                  <select name="userId" id="inputUserId"></select>
+
+              </div></td>
+  </tr>
+    <tr>
+                        <td>              <div class="control-group">
+                   <label class="control-label" for="inputTeamId">Team</label>
+                  <select  name="teamId" id="inputTeamId"><option>Select Team</option> </select>
+              </div></td> 
+    <td>              <div class="control-group">
                 <label class="control-label" for="inputLocation">Location</label>
-                <div class="controls">
                 <select  name="location" id="inputLocation">
                   </select>
-                </div>
-              </div>
+              </div></td>
 
-              <div class="control-group">
-                <label class="control-label" for="inputPosition">Position</label>
-                <div class="controls">
-                  <input type="text" id="inputPosition" placeholder="Position" name="position">
-                </div>
-              </div>
-
+  </tr>
+  <tr>
+        <td>              <div class="control-group">
+                  <label class="control-label" for="inputPosition">Position</label>
+                  <select  name="position" id="inputPosition">
+                  </select>
+              </div></td> 
+    <td> <div class="control-group">
+                  <label class="control-label" for="inputNumber">Number</label>
+                  <input type="text" id="inputNumber" placeholder="Number" name="number">
+              </div></td>
+  </tr>
+</table>
               <div class="control-group">
                 <label class="control-label" for="inputCreateTime">CreateTime</label>
                 <div class="controls">
@@ -388,9 +710,10 @@ function getNowFormatDate() {
             <h4 class="modal-title" id="myModalLabel">Add Asset</h4>
           </div>
           <div class="modal-body">
-            <form class="form-horizontal" action="/resource/addtrans" method="post" id="modalform">
+            <form class="form-horizontal"  id="modalform">
               <input type="hidden" id="assetId"  name="id">
               <input type="hidden" id="assetType"  name="type">
+              <input type="hidden" id="sourceName"  name="source">
               <div class="control-group">
                 <label class="control-label" for="inputUserName">Name</label>
                 <div class="controls">
@@ -401,8 +724,60 @@ function getNowFormatDate() {
               </div>
               </div>
               <div class="modal-footer">
-                <input type="submit" class="btn btn-primary" value="Transfer"></input>
+                <button type="button" class="btn btn-primary" id="TransferOne">Submit</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+        <!-- Detail Modal -->
+    <div class="modal fade" id="DetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Asset Detail</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" action="/asset/add" method="post" id="modalform">
+              <input type="hidden" id="inputId"  name="id">
+              <table style="width:100%">
+  <tr>
+    <td>              <div class="control-group">
+                <label class="control-label" for="inputName">Name:</label>
+                  <label class="control-label" for="inputName" id="DetailName">Name</label>
+        
+              </div></td>
+    <td>     <div class="control-group">
+                  <label class="control-label" for="inputType">Type:</label>
+                  <label class="control-label" for="inputName" id="DetailType">Type</label>
+              </div></td> 
+  </tr>
+  <tr>
+    <td>     <div class="control-group">
+                  <label class="control-label" for="inputType">Barcode:</label>
+                  <label class="control-label" for="inputType" id="DetailBarcode">barcode</label>
+              </div></td> 
+    <td>              <div class="control-group">
+             
+                  <label class="control-label" for="inputServerId">IP:</label>
+                  <label class="control-label" for="inputServerId" id="DetailIP">IP</label>
+              </div></td> 
+  </tr>
+    <tr>
+                  <td>       </td>
+
+  </tr>
+
+</table>
+       <div class="control-group">
+                <label class="control-label" for="inputUserId">Description:</label>
+                  <label class="control-label" for="inputServerId" id="DetailDescription">Description</label>
+
               </div>
 
             </form>
@@ -412,6 +787,31 @@ function getNowFormatDate() {
       </div>
     </div>
 
+<!--TransferAllModal-->
+        <div class="modal fade" id="TransferAllModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add Asset</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" id="modalform">
+              <div class="control-group">
+                <label class="control-label" for="transferAllInputUserName">Name</label>
+                <div class="controls">
+                  <select  name="dest" id="transferAllInputUserName">
 
-
-  </body>
+                  </select>
+                </div>
+              </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="transferAllSubmit">Transfer</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

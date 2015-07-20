@@ -55,9 +55,6 @@
           <table id = "mytable" class="display">
             <thead>
               <tr>
-                <th style="width:5%">
-                  <input class="no-margin" type="checkbox">
-                </th>
                 <th style="width:5%" class="hidden-phone">Id</th>
                 <th style="width:10%" class="hidden-phone">AssetId</th>
                 <th style="width:15%" class="hidden-phone">Type</th>
@@ -69,9 +66,6 @@
             <tbody>
               <% allChangeInfo.forEach(function(changeInfo) { %>
               <tr>
-               <td>
-                 <input class="no-margin" type="checkbox">
-               </td>
                <td id="id"><%= changeInfo.id %></td>
                <td id="AssetId"><%= changeInfo.AssetId %></td>
                <td class="hidden-phone" id="Type"><%= changeInfo.Type %></td>

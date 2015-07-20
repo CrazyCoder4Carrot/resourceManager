@@ -26,28 +26,30 @@
   
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
 
+<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/extensions/TableTools/css/dataTables.tableTools.css">
+<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
 
       <script>
-      var table = $('#mytable2').DataTable();
-
-$(document).ready(function() {
-    $('#checkAll').click(function(event) {  //on click 
-        if(this.checked) { // check select status
-          console.log("123");
- //$(':checkbox', table.rows().nodes()).prop('checked', this.checked);
-             $('.checkbox1').each(function() { //loop through each checkbox
-                this.checked = false; //deselect all checkboxes with class "checkbox1"                       
-            }); 
-        }else{
-            $('.checkbox1').each(function() { //loop through each checkbox
-                this.checked = false; //deselect all checkboxes with class "checkbox1"                       
-            });         
+  $(document).ready(function() {
+    $('#mytable2').DataTable( {
+        dom: 'T<"clear">lfrtip',
+        tableTools: {
+            "sSwfPath": "/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+            "sRowSelect": "multi",
+            "aButtons": [ "select_all", "select_none",
+            "copy",
+                "print",
+                "csv", 
+                "xls", 
+                "pdf"
+                 ]
         }
-    });
-    
-});
-
+    } );
+} ); 
       $(document).ready( function () {
     $('#mytable2').DataTable();
 } );
@@ -94,6 +96,29 @@ setSelectedIndex(document.getElementById('inputRole'),role);
       });
 
 
+$(function(){
+  $('button#Delete').on('click', function()
+  {
+    var oTT = TableTools.fnGetInstance( 'mytable2' );
+    var aSelectedTrs = oTT.fnGetSelectedData();
+    if(aSelectedTrs != null)
+      $.each(aSelectedTrs, function(i, value) 
+      {
+        console.log(value[0]);
+        $.ajax({
+          url: "/api/users/" +value[0],
+          type: 'DELETE',
+          success: function(result) 
+          {
+            console.log(value[0]);
+          }
+        });
+        location.reload();
+      })
+});
+});
+
+
       </script>
     </head>
 
@@ -101,16 +126,10 @@ setSelectedIndex(document.getElementById('inputRole'),role);
       <% include nav %>
       <div class = "container">
         <h1>User Management</h1>
-
-        <input class="no-margin" type="checkbox" id="checkAll">
-
     <!--     <div class="table-responsive"> -->
           <table id = "mytable2"  class="display">
             <thead>
               <tr>
-                <th >
-                  <input class="no-margin" type="checkbox" id="check">
-                </th>
                 <th >Id</th>
                 <th >Name</th>
                 <th >Password</th>
@@ -118,26 +137,18 @@ setSelectedIndex(document.getElementById('inputRole'),role);
                 <th  >Email Address</th>
                 <th >Role</th>
                 <th >Action</th>
-                <th >Action</th>
               </tr>
             </thead>
             <tbody>
 
               <% allUsersInfo.forEach(function(userInfo) { %>
               <tr>
-                <td>
-                  <input class="checkbox1" type="checkbox" id="selectFlag">
-                </td>
                 <td id="id"><%= userInfo.id %></td>
                 <td id="username"><%= userInfo.username %></td>
                 <td id="password"><%= userInfo.password %></td>
                 <td id="teamid"><%= userInfo.teamid %></td>
                 <td id="emailaddress"><%= userInfo.emailaddress %></td>
                 <td  id="role"><%= userInfo.role %></td>
-                <td >
-                <div class="btn-group"><a href="\users\delete\<%= userInfo.id %>" class="btn btn-primary">Delete</a>
-                  </div>
-                </td>
                  <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
                 </td>
               </tr>
@@ -149,7 +160,7 @@ setSelectedIndex(document.getElementById('inputRole'),role);
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
             Add
           </button>
-          <button class="btn btn-lg btn-primary" type="submit">Delete</button>
+          <button class="btn btn-lg btn-primary" type="submit" id="Delete">Delete</button>
         </div>
 
         <!-- Modal -->

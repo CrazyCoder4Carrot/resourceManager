@@ -10,7 +10,7 @@ router.get('/', function(req, res, next)
     var sess = req.session;
     if (sess.results)
     {
-        res.redirect('/resource');
+        res.redirect('/asset');
     }
     else
     {
@@ -30,7 +30,7 @@ router.post('/', function(req, res)
         {
             console.log(results.username);
             req.session.results = results;
-            res.redirect('/resource');
+            res.redirect('/asset');
         }
         else
         {

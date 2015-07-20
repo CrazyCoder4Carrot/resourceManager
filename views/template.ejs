@@ -7,7 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="img/favicon.ico">
-<title>User Management</title>
+<title>Template Management</title>
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src = "js/bootstrap.js"></script>
 <!-- Bootstrap core CSS -->
@@ -29,6 +29,46 @@
 
 
       <script>
+    $.getJSON("/api/types", function(data){
+      var listItems;
+      $.each(data, function(i,val){
+  //  console.log(val.name);
+  listItems += "<option value='" + val.name+ "'>" + val.name + "</option>";
+});
+      $("#SelectType").html(listItems);
+    });
+
+
+    $.getJSON("/api/model", function(data){
+      var listItems;
+      $.each(data, function(i,val){
+  //  console.log(val.name);
+  listItems += "<option value='" + val.name+ "'>" + val.name + "</option>";
+});
+      $("#SelectModel").html(listItems);
+    });
+
+
+    $.getJSON("/api/size", function(data){
+      var listItems;
+      $.each(data, function(i,val){
+  //  console.log(val.name);
+  listItems += "<option value='" + val.name+ "'>" + val.name + "</option>";
+});
+      $("#SelectSize").html(listItems);
+    });
+
+
+    $.getJSON("/api/manu", function(data){
+      var listItems;
+      $.each(data, function(i,val){
+  //  console.log(val.name);
+  listItems += "<option value='" + val.name+ "'>" + val.name + "</option>";
+});
+      $("#SelectManufacturer").html(listItems);
+    });
+
+      
       $(document).ready( function () {
     $('#mytable2').DataTable();
 } );
@@ -40,24 +80,18 @@
           var manu = $(event.target).closest('tr').find('#manu').text();
           var model = $(event.target).closest('tr').find('#model').text();
           var size = $(event.target).closest('tr').find('#size').text();
-          console.log(id +" "+username);
-          //console.log(userId);
+          console.log(size);
           $(".modal-title").text("Edit template");
           $("#modalform").attr("action","template/update");
           $("#inputName").val(username);
-          $("#Manufacturer").val(manu);
-          $("#Model").val(model);
-          $("#Size").val(size);
+          $("#SelectManu").val(manu);
+          $("#SelectModel").val(model);
+          console.log($('#SelectSize').val());
+          $("#SelectSize").val(size);
+                    console.log($('#SelectSize').val());
+          $("#SelectType").val(type);
           $('#inputId').val(id);
-          function setSelectedIndex(s, v) {
-for ( var i = 0; i < s.options.length; i++ ) {
-if ( s.options[i].text == v ) {
-s.options[i].selected = true;
-return;
-}
-}
-}
-setSelectedIndex(document.getElementById('inpuType'),type);
+                              console.log($('#SelectSize').val());
         });
       });
             $(function(){
@@ -65,13 +99,12 @@ setSelectedIndex(document.getElementById('inpuType'),type);
           $(".modal-title").text("Add Template");
           $("#modalform").attr("action","template/add");
           $("#inputName").val("");
-          $("#Manufacturer").val("");
-          $("#Model").val("");
-          $("#Size").val("");
           $('#inputId').val("");
-          $('#inpuType').val("");
         });
       });
+
+
+
       </script>
     </head>
 
@@ -83,9 +116,6 @@ setSelectedIndex(document.getElementById('inpuType'),type);
           <table id = "mytable2"  class="display">
             <thead>
               <tr>
-                <th >
-                 <!--  <input class="no-margin" type="checkbox"> -->
-                </th>
                 <th >Id</th>
                 <th >Name</th>
                 <th >Type</th>
@@ -100,21 +130,21 @@ setSelectedIndex(document.getElementById('inpuType'),type);
 
               <% allTemplateInfo.forEach(function(templateInfo) { %>
               <tr>
-                <td>
-                  <input type="checkbox">
-                </td>
                 <td id="id"><%= templateInfo.id %></td>
                 <td id="username"><%= templateInfo.name %></td>
                 <td id="type"><%= templateInfo.type %></td>
                 <td id="manu"><%= templateInfo.manufacturer %></td>
                 <td id="model"><%= templateInfo.model %></td>
                 <td id="size"><%= templateInfo.size %></td>
+
+                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
+                </td>
+
                 <td >
                 <div class="btn-group"><a href="\template\delete\<%= templateInfo.id %>" class="btn btn-primary">Delete</a>
                   </div>
                 </td>
-                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-                </td>
+
               </tr>
               <% }); %>
             </tbody>
@@ -124,7 +154,7 @@ setSelectedIndex(document.getElementById('inpuType'),type);
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
             Add
           </button>
-          <button class="btn btn-lg btn-primary" type="submit">Delete</button>
+<!--           <button class="btn btn-lg btn-primary" type="submit">Delete</button> -->
         </div>
 
         <!-- Modal -->
@@ -149,10 +179,7 @@ setSelectedIndex(document.getElementById('inpuType'),type);
                 <div class="control-group">
                   <label class="control-label" for="inpuType">Type</label>
                   <div class="controls">
-                    <select name="type" id="inpuType">
-                  <% allTypeInfo.forEach(function(type) { %>
-                    <option><%= type.name %></option>
-                  <% }); %>
+                    <select name="type" id="SelectType">
                     </select>
                   </div>
                 </div>
@@ -162,58 +189,30 @@ setSelectedIndex(document.getElementById('inpuType'),type);
                                 <div class="control-group">
                   <label class="control-label" for="inputName">Manufacturer</label>
                   <div class="controls">
-                    <input type="text" id="Manufacturer" placeholder="Manufacturer" name="Manufacturer">
+                  <!--   <input type="text" id="Manufacturer" placeholder="Manufacturer" name="Manufacturer"> -->
+                  <select  name="Manufacturer" id="SelectManufacturer">
+                  </select>
                   </div>
                 </div>
 
                                 <div class="control-group">
                   <label class="control-label" for="inputName">Model</label>
                   <div class="controls">
-                    <input type="text" id="Model" placeholder="Model" name="Model">
+           <!--          <input type="text" id="Model" placeholder="Model" name="Model"> -->
+                  <select  name="Model" id="SelectModel">
+                  </select>
                   </div>
                 </div>
 
                                 <div class="control-group">
-                  <label class="control-label" for="inputName">Szie</label>
+                  <label class="control-label" for="inputName">Size</label>
                   <div class="controls">
-                    <input type="text" id="Size" placeholder="Size" name="Size">
-                  </div>
-                </div>
-<!--                 <div class="control-group">
-                  <label class="control-label" for="inputPassword">Password</label>
-                  <div class="controls">
-                    <input type="text" id="inputPassword" placeholder="Password" name="password">
+                  <!--   <input type="text" id="Size" placeholder="Size" name="Size"> -->
+                    <select  name="Size" id="SelectSize">
+                  </select>
                   </div>
                 </div>
 
-                <div class="control-group">
-                  <label class="control-label" for="inputTeam">team</label>
-                  <div class="controls">
-                    <select name="teamid" id="inputTeam">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <label class="control-label" for="inputEmail">Email Address</label>
-                  <div class="controls">
-                    <input type="text" id="inputEmail" placeholder="Email Address" name="emailaddress">
-                  </div>
-                </div> -->
-
-<!--                 <div class="control-group">
-                  <label class="control-label" for="inputEmail">Role</label>
-                  <div class="controls">
-                    <select name="role" id="inputRole">
-                      <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                      </select>
-                    </div>
-                  </div> -->
                   <div class="modal-footer">
                     <input type="submit" class="btn btn-primary" value="Save changes"></input>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

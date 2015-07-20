@@ -7,7 +7,8 @@
     <span class="icon-bar"></span>
     <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">Asset Management System</a>
+    <a class="navbar-brand" >Asset Management System</a>
+
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
@@ -15,8 +16,11 @@
         <%if(typeof result != 'undefined' && result.role != 3){%>
     <li calss = "active" ><a href="\users" >Users</a></li>
 <%}%>
-    <li><a href="\resource">Assets</a></li>
-    <li><a href="\detail">Detail</a></li>
+    <li><a href="\asset">Assets</a></li>
+            <%if(typeof result != 'undefined' && result.role != 3){%>
+        <li><a href="\detail">Detail</a></li>
+<%}%>
+
     <li><a href="\change">Change</a></li>
     <li><a href="\report">Report</a></li>
     <li><a href="\order">Order</a></li>
@@ -25,9 +29,14 @@
         <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Setting <b class="caret"></b></a>
     <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
     <li role="presentation"><a role="menuitem" tabindex="-1" href="/team">Team</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="/lab">Location</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/location">Location</a></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" href="/type">Type</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="/template">Template</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/template">Template</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/position">Position</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/model">Model</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/size">Size</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/manufacturer">Manufacturer</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/import">Import</a></li>
 <%}%>
 
     </ul>
@@ -36,6 +45,7 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
+        <a class="navbar-brand" >hi, <%=result.username%></a>
     <li><a href="../logout/">Logout</a></li>
     </ul>
     </div><!--/.nav-collapse -->
