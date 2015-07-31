@@ -324,6 +324,30 @@ exports.findAllUsers = function findAllUsers(req, res)
     }
 }
 
+exports.findOneUsers = function findOneUsers(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var id = req.params.id;
+        db.queryOneuser(id, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err + queryResults);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
 exports.findAllPosition = function findAllPosition(req, res)
 {
     var sess = req.session;
@@ -485,6 +509,27 @@ exports.selectResources = function selectResources(req, res)
     }
 }
 
+exports.selectOneResources = function selectOneResources(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var id = req.params.id;
+        console.log(sess.results);
+        db.queryOneResource(sess.results, id, function(err, queryResults)
+        {
+            if (queryResults)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+}
+
 exports.findAllOrder = function findAllOrder(req, res)
 {
     var sess = req.session;
@@ -541,7 +586,9 @@ exports.transfer = function transfer(req, res)
             assetId: req.body.id,
             type: req.body.type,
             source: req.body.source,
+            sourceTeam: req.body.sourceTeam,
             dest: req.body.dest,
+            destTeam: req.body.destTeam,
             date: date.toISOString().slice(0, 19).replace('T', ' ')
         }
         db.addChange(resourceInfo, function(err, queryResults)
@@ -565,12 +612,50 @@ exports.updateResource = function updateResource(req, res)
     {
         var id = req.params.id;
         var username = req.body.dest;
+        var destTeam = req.body.destTeam;
         var resourceInfo = {
             assetId: id,
-            dest: username
+            dest: username,
+            teamName: destTeam
         }
         console.log(resourceInfo);
         db.updateResourceUser(resourceInfo, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+}
+exports.updateResourceBatch = function updateResourceBatch(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var id = req.params.id;
+        var resourceInfo = {
+            type: req.body.type,
+            size: req.body.size,
+            server: req.body.server,
+            user: req.body.user,
+            team: req.body.team,
+            location: req.body.location,
+            position: req.body.positon,
+            createtime: req.body.createtime,
+            discard: req.body.discard,
+            template: req.body.template,
+            manufacturer: req.body.manufacturer,
+            model: req.body.model,
+            status: req.body.status,
+            assetId: id
+        }
+        console.log(resourceInfo);
+        db.updateResourceBatch(resourceInfo, function(err, queryResults)
         {
             if (!err)
             {
@@ -722,6 +807,122 @@ exports.deleteManu = function deleteManu(req, res)
             else
             {
                 res.send(err + "filed");
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.findAllRoles = function findAllRoles(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+
+        db.selectAllRoles(sess.results, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findTeamUsers = function findTeamUsers(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var team = req.params.name;
+        db.selectTeamUsers(team, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findAssetByUsers = function findAssetByUsers(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.selectAssetByUser(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findAssetByTeam = function findAssetByTeam(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var team = req.params.team;
+        db.selectAssetByTeam(team, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findAllStatus = function findAllStatus(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var team = req.params.team;
+        db.selectAllStatus(team, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
             }
         });
     }

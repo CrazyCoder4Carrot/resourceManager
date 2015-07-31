@@ -13,14 +13,12 @@
 
     <div id="navbar" class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
+        <li><a href="\asset">Assets</a></li>
         <%if(typeof result != 'undefined' && result.role != 3){%>
     <li calss = "active" ><a href="\users" >Users</a></li>
 <%}%>
-    <li><a href="\asset">Assets</a></li>
-            <%if(typeof result != 'undefined' && result.role != 3){%>
-        <li><a href="\detail">Detail</a></li>
-<%}%>
 
+<li><a href="\detail">Detail</a></li>
     <li><a href="\change">Change</a></li>
     <li><a href="\report">Report</a></li>
     <li><a href="\order">Order</a></li>
@@ -46,6 +44,12 @@
 
     <ul class="nav navbar-nav navbar-right">
         <a class="navbar-brand" >hi, <%=result.username%></a>
+        <a class="navbar-brand" >Team: <%=result.teamid%></a>
+
+                </a>
+        <input type="textbox" name="name" hidden ="true" id="name" value ="<%=result.username%>"/>
+        <input type="textbox" name="role" id="role" hidden ="true" value = "<%=result.role%>"/>
+        <input type="textbox" name="team" id="team" hidden ="true" value = "<%=result.teamid%>"/>
     <li><a href="../logout/">Logout</a></li>
     </ul>
     </div><!--/.nav-collapse -->

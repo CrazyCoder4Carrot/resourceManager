@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <!-- saved from url=(0040)http://getbootstrap.com/examples/signin/ -->
 <html lang="en">
 
@@ -51,14 +51,99 @@
                 ]
             }
         });
+        var username = $('#name').val();
+        var team = $('#team').val();
+        var role = $('#role').val();
         $.getJSON("http://localhost:3000/api/teams", function(data)
         {
             var listItems;
             $.each(data, function(i, val)
             {
-                listItems += "<option value='" + val.name + "'>" + val.name + "</option>";
+                if (role < 3)
+                {
+                    listItems += "<option value='" + val.name + "'>" + val.name + "</option>";
+                }
+                else
+                {
+                    if (team == val.name)
+                        listItems += "<option value='" + val.name + "'>" + val.name + "</option>";
+                }
+
             });
             $("#inputTeam").html(listItems);
+        });
+        $('button#Add').on('click', function()
+        {
+            var username = $('#name').val();
+            var team = $('#team').val();
+            console.log(team);
+            var role = $('#role').val();
+            $('#message').html('');
+            $(".modal-title").text("Add order");
+            $("#modalform").attr("action", "order/add");
+            $("#inputCategory").val("");
+            $("#inputVendor").val("");
+            $("#inputQuantity").val("");
+            $("#inputUnitPrice").val("");
+            $("#inputOrder").val("");
+            var myDate = new Date();
+            var mytime = myDate.toLocaleString(); //获取当前时间
+            var formattime = moment(mytime).format('YYYY-MM-DD HH:MM')
+            $('#inputDate').val(formattime);
+            $('#inputTeam').val(team);
+            $('#inputComment').val("");
+            $('#inputId').val("");
+        });
+        $('#saveSubmit').on('click', function()
+        {
+            var category = $("#inputCategory").val().trim();
+            $("#inputCategory").val(category);
+            if (category.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Category can not be empty</div>');
+                return;
+            }
+            var vendor = $("#inputVendor").val().trim();
+            $("#inputVendor").val(vendor);
+            if (vendor.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Vendor can not be empty</div>');
+                return;
+            }
+            var quantity = $("#inputQuantity").val().trim();
+            $("#inputQuantity").val(quantity);
+            if (quantity.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Quantity can not be empty</div>');
+                return;
+            }
+            var unitPrice = $("#inputUnitPrice").val().trim();
+            $("#inputUnitPrice").val(unitPrice);
+            if (unitPrice.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Unit Price can not be empty</div>');
+                return;
+            }
+            var order = $("#inputOrder").val().trim();
+            $("#inputOrder").val(order);
+            if (order.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Order can not be empty</div>');
+                return;
+            }
+            var comment = $("#inputComment").val().trim();
+            $("#inputComment").val(comment);
+            if (comment.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Comment can not be empty</div>');
+                return;
+            }
         });
     });
 
@@ -67,15 +152,16 @@
     {
         $('button#Edit').on('click', function()
         {
-            var id = $(event.target).closest('tr').find('#id').text();
-            var category = $(event.target).closest('tr').find('#category').text();
-            var vendor = $(event.target).closest('tr').find('#vendor').text();
-            var quantity = $(event.target).closest('tr').find("#quantity").text();
-            var unitprice = $(event.target).closest('tr').find("#unitprice").text();
-            var date = $(event.target).closest("tr").find("#date").text();
-            var order = $(event.target).closest("tr").find("#order").text();
-            var comment = $(event.target).closest("tr").find("#comment").text();
-            var teamId = $(event.target).closest("tr").find("#teamId").text();
+            $('#message').html('');
+            var id = $(event.target).closest('tr').find('#id').text().trim();
+            var category = $(event.target).closest('tr').find('#category').text().trim();
+            var vendor = $(event.target).closest('tr').find('#vendor').text().trim();
+            var quantity = $(event.target).closest('tr').find("#quantity").text().trim();
+            var unitprice = $(event.target).closest('tr').find("#unitprice").text().trim();
+            var date = $(event.target).closest("tr").find("#date").text().trim();
+            var order = $(event.target).closest("tr").find("#order").text().trim();
+            var comment = $(event.target).closest("tr").find("#comment").text().trim();
+            var teamId = $(event.target).closest("tr").find("#teamId").text().trim();
             $(".modal-title").text("Edit order");
             $("#modalform").attr("action", "order/update");
             $("#inputCategory").val(category);
@@ -90,44 +176,18 @@
             $('#inputId').val(id);
         });
     });
-    $(function()
-    {
-        $('button#Add').on('click', function()
-        {
-            $.getJSON("/api/teams", function(data)
-            {
-                var listItems;
-                $.each(data, function(i, val)
-                {
-                    listItems += "<option value='" + val.name + "'>" + val.name + "</option>";
-                });
-                $("#inputTeam").html(listItems);
-            });
-            $(".modal-title").text("Add order");
-            $("#modalform").attr("action", "order/add");
-            $("#inputCategory").val("");
-            $("#inputVendor").val("");
-            $("#inputQuantity").val("");
-            $("#inputUnitPrice").val("");
-            $("#inputOrder").val("");
-            var myDate = new Date();
-            var mytime = myDate.toLocaleString(); //获取当前时间
-            var formattime = moment(mytime).format('YYYY-MM-DD HH:MM:SS')
-            $('#inputDate').val(formattime);
+    $(function() {
 
-            $('#inputTeam').val("");
-            $('#inputComment').val("");
-            $('#inputId').val("");
-        });
     });
 
-
+    var deleteCount = 0;
     $(function()
     {
         $('button#delete').on('click', function()
         {
             var oTT = TableTools.fnGetInstance('mytable');
             var aSelectedTrs = oTT.fnGetSelectedData();
+            var deleteCount = aSelectedTrs.length;
             if (aSelectedTrs != null)
                 $.each(aSelectedTrs, function(i, value)
                 {
@@ -138,7 +198,9 @@
                         type: 'DELETE',
                         success: function(result)
                         {
-                            location.reload();
+                            deleteCount--;
+                            if (deleteCount == 0)
+                                location.reload();
                         }
                     });
 
@@ -165,7 +227,6 @@
                             <th style="width:15%" class="hidden-phone">DateTime</th>
                             <th style="width:15%" class="hidden-phone">Comment</th>
                             <th style="width:15%" class="hidden-phone">Team</th>
-                            <!--             <th style="width:15%" class="hidden-phone" >Delete</th> -->
                             <th style="width:15%" class="hidden-phone">Edit</th>
                         </tr>
                     </thead>
@@ -191,7 +252,7 @@
                                     <%=orderInfo.order %>
                                 </td>
                                 <td class="hidden-phone" id="date">
-                                    <%=moment(orderInfo.date).format( 'YYYY-MM-DD HH:MM:SS') %>
+                                    <%=moment(orderInfo.date).format( 'YYYY-MM-DD HH:MM') %>
                                 </td>
                                 <td class="hidden-phone" id="comment">
                                     <%=orderInfo.comment %>
@@ -220,6 +281,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Add Order</h4>
                         </div>
+                        <div id="message"></div>
                         <div class="modal-body">
                             <form class="form-horizontal" action="/order/update" method="post" name="modalform" id="modalform">
                                 <input type="hidden" id="inputId" placeholder="Category" name="id">
@@ -272,7 +334,7 @@
                                             {
                                                 $('#datetimepicker1').datetimepicker(
                                                 {
-                                                    format: "YYYY-MM-DD HH:MM:SS"
+                                                    format: "YYYY-MM-DD HH:MM"
                                                 });
                                             });
                                             </script>
@@ -293,7 +355,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="submit" class="btn btn-primary" value="Save changes">
+                                    <input type="submit" class="btn btn-primary" value="Save changes" id="saveSubmit">
                                     </button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>

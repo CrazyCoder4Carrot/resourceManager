@@ -1,134 +1,137 @@
 <!DOCTYPE html>
 <!-- saved from url=(0040)http://getbootstrap.com/examples/signin/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="img/favicon.ico">
-<title>Type Management</title>
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src = "js/bootstrap.js"></script>
-<!-- Bootstrap core CSS -->
-<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+<html lang="en">
 
-<!-- Custom styles for this template -->
-<link href="css/signin.css" rel="stylesheet">
-
-
-<!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
-  
-<!-- jQuery -->
-<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-
-
-      <script>
-      $(document).ready( function () {
-    $('#mytable2').DataTable();
-} );
-            $(function(){
-        $('button#Edit').on('click', function(){
-          var id = $(event.target).closest('tr').find('#id').text();
-          var username = $(event.target).closest('tr').find('#username').text();
-          console.log(id +" "+username);
-          //console.log(userId);
-          $(".modal-title").text("Edit type");
-          $("#modalform").attr("action","type/update");
-          $("#inputName").val(username);
-           $('#inputId').val(id);
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+    <title>Type Management</title>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+    <!-- jQuery -->
+    <!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+    <script>
+    $(document).ready(function()
+    {
+        $('#mytable2').DataTable();
+        $('#saveSubmit').on('click', function()
+        {
+            var name = $("#inputName").val().trim();
+            $("#inputName").val(name);
+            if (name.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name can not be empty</div>');
+                return 0;
+            }
         });
-      });
-            $(function(){
-        $('button#Add').on('click', function(){
-          $(".modal-title").text("Add type");
-          $("#modalform").attr("action","type/add");
-          $("#inputName").val("");
-          // $("#inputPassword").val("");
-          // $("#inputTeam").val();
-          // $("#inputEmail").val("");
-          // $("#inputRole").val();
+    });
+    $(function()
+    {
+        $('button#Edit').on('click', function()
+        {
+            $('#message').html('');
+            var id = $(event.target).closest('tr').find('#id').text().trim();
+            var username = $(event.target).closest('tr').find('#username').text().trim();
+            $(".modal-title").text("Edit type");
+            $("#modalform").attr("action", "type/update");
+            $("#inputName").val(username);
+            $('#inputId').val(id);
         });
-      });
-      </script>
-    </head>
+    });
+    $(function()
+    {
+        $('button#Add').on('click', function()
+        {
+            $('#message').html('');
+            $(".modal-title").text("Add type");
+            $("#modalform").attr("action", "type/add");
+            $("#inputName").val("");
+        });
+    });
+    </script>
+</head>
 
-    <body>
-      <% include nav %>
-      <div class = "container">
-        <h1>Type</h1>
-    <!--     <div class="table-responsive"> -->
-          <table id = "mytable2"  class="display">
-            <thead>
-              <tr>
-                <th >Id</th>
-                <th >Name</th>
-                <th >Action</th>
-                <th >Action</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <% allTypeInfo.forEach(function(typeInfo) { %>
-              <tr>
-                <td id="id"><%= typeInfo.id %></td>
-                <td id="username"><%= typeInfo.name %></td>
-
-                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-                </td>
-
-                <td >
-                <div class="btn-group"><a href="\type\delete\<%= typeInfo.id %>" class="btn btn-primary">Delete</a>
-                  </div>
-                </td>
-
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
-  <!--       </div> -->
-        <div class="form-actions">
-          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
-            Add
-          </button>
-<!--           <button class="btn btn-lg btn-primary" type="submit">Delete</button> -->
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add User</h4>
-              </div>
-              <div class="modal-body">
-               <form class="form-horizontal" action="/type/update" method="post" name="modalform" id="modalform">
-                <input type="hidden" id="inputId" name="id"></input>
-                <div class="control-group">
-                  <label class="control-label" for="inputName">Name</label>
-                  <div class="controls">
-                    <input type="text" id="inputName" placeholder="Name" name="name">
-                  </div>
-                </div>
-
-                  <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" value="Save changes"></input>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </form>
-              </div>
-
+<body>
+    <% include nav %>
+        <div class="container">
+            <h1>Type Management</h1>
+            <!--     <div class="table-responsive"> -->
+            <table id="mytable2" class="display">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% allTypeInfo.forEach(function(typeInfo) { %>
+                        <tr>
+                            <td id="id">
+                                <%=typeInfo.id %>
+                            </td>
+                            <td id="username">
+                                <%=typeInfo.name %>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
+                            </td>
+                            <td>
+                                <div class="btn-group"><a href="\type\delete\<%= typeInfo.id %>" class="btn btn-primary">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+            <!--       </div> -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
+                    Add
+                </button>
+                <!--           <button class="btn btn-lg btn-primary" type="submit">Delete</button> -->
             </div>
-          </div>
-        </div>
-
-
-
-      </body>
-
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Add type</h4>
+                        </div>
+                        <div id="message"></div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" action="/type/update" method="post" name="modalform" id="modalform">
+                                <input type="hidden" id="inputId" name="id"></input>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputName">Name </label>
+                                    <div class="controls">
+                                        <input type="text" id="inputName" placeholder="Name" name="name">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-primary" value="Save changes" id="saveSubmit"></input>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>

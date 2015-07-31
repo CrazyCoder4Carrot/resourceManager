@@ -103,7 +103,8 @@ router.post('/add', function(req, res, next)
             position: req.body.position,
             createtime: req.body.createtime,
             discard: req.body.discard,
-            number:req.body.number
+            number:req.body.number,
+            status:req.body.status
         }
         db.insertResource(resourceInfo, function(err, queryResults)
         {
@@ -153,6 +154,7 @@ router.post('/update', function(req, res, next)
             createtime: req.body.createtime,
             discard: req.body.discard,
             number:req.body.number,
+            status:req.body.status
         }
         console.log(resourceInfo);
         db.updateResource(resourceInfo, function(err, queryResults)
@@ -270,6 +272,7 @@ router.post('/addtrans', function(req, res, next)
             type: req.body.type,
             source: req.body.source,
             dest: req.body.dest,
+            destteamName:req.body.teamName,
             date: date.toISOString().slice(0, 19).replace('T', ' ')
         }
             console.log(resourceInfo);

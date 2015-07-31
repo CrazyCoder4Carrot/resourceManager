@@ -29,562 +29,24 @@
     <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
     <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/extensions/FixedColumns/js/dataTables.fixedColumns.js"></script>
     <link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/extensions/FixedColumns/css/dataTables.fixedColumns.css">
+    <script src="/js/resource.js"></script>
     <script>
-    $(document).ready(function()
-    {
-
-        $('#mytable').DataTable(
-        {
-            dom: 'T<"clear">lfrtip',
-            tableTools:
-            {
-                "sSwfPath": "/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
-                "sRowSelect": "multi",
-                "aButtons": ["select_all", "select_none",
-                    "copy",
-                    "print",
-                    "csv",
-                    "xls",
-                    "pdf"
-                ]
-            },
-
-        });
-        $.ajax(
-        {
-            url: '/api/users',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputUserId').append($('<option>').text(value.username).attr('value', value.username));
-                });
-            }
-        });
-
-        $.ajax(
-        {
-            url: '/api/servers',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputServerId').append($('<option>').text(value.id).attr('value', value.id));
-                });
-            }
-        });
-
-        $.ajax(
-        {
-            url: '/api/templates',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    console.log(value.name);
-                    $('#inputTemplate').append($('<option>').text(value.name).attr('value', value.name));
-                });
-            }
-        });
-
-        $.ajax(
-        {
-            url: '/api/types',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputType').append($('<option>').text(value.name).attr('value', value.name));
-                });
-            }
-        });
-        $.ajax(
-        {
-            url: '/api/manu',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputManufacturer').append($('<option>').text(value.name).attr('value', value.name));
-                });
-            }
-        });
-        $.ajax(
-        {
-            url: '/api/model',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputModel').append($('<option>').text(value.name).attr('value', value.name));
-                });
-            }
-        });
-
-
-        $.ajax(
-        {
-            url: '/api/size',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputSize').append($('<option>').text(value.name).attr('value', value.name));
-
-                });
-            }
-        });
-
-        $.ajax(
-        {
-            url: '/api/teams',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputTeamId').append($('<option>').text(value.name).attr('value', value.name));
-
-                });
-            }
-        });
-        $.ajax(
-        {
-            url: '/api/position',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputPosition').append($('<option>').text(value.name).attr('value', value.name));
-
-                });
-            }
-        });
-
-        $.ajax(
-        {
-            url: '/api/locations',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data)
-            {
-                $.each(data, function(i, value)
-                {
-                    $('#inputLocation').append($('<option>').text(value.name).attr('value', value.name));
-                });
-            }
-        });
-
-        $('.detailclass').on('click', function(e)
-        {
-            $('#DetailModal').modal('show');
-            console.log("enter ");
-            var id = $(event.target).closest('tr').find('#id').text();
-            console.log(id);
-            getDetailInfo(id);
-            e.preventDefault();
-        });
-
-    });
-
-    function setCheckedValue(radioObj, newValue)
-    {
-        if (!radioObj)
-            return;
-        var radioLength = radioObj.length;
-        if (radioLength == undefined)
-        {
-            radioObj.checked = (radioObj.value == newValue.toString());
-            return;
-        }
-        for (var i = 0; i < radioLength; i++)
-        {
-            radioObj[i].checked = false;
-            if (radioObj[i].value == newValue.toString())
-            {
-                radioObj[i].checked = true;
-            }
-        }
-    }
-    $(function()
-    {
-        $('button#Edit').on('click', function()
-        {
-            var oTT = TableTools.fnGetInstance('mytable');
-            var aData = oTT.fnGetSelectedData();
-            var rows = oTT.fnGetSelected();
-            console.log(aData[0]);
-            console.log("lenght is " + aData.length);
-            if (aData.length == 1)
-            {
-                var rowData = aData[0];
-                var id = rowData[0];
-                var name = rowData[1];
-                var template = rowData[2];
-                var type = rowData[3];
-                var manufacturer = rowData[4];
-                var model = rowData[5];
-                var size = rowData[6];
-                var serverId = rowData[7];
-                var userId = rowData[8];
-                var teamId = rowData[9];
-                var location = rowData[10];
-                var position = rowData[11];
-                var number = rowData[12];
-                var createtime = rowData[13];
-                var discard = rowData[14];
-                var html = $.parseHTML(name);
-                console.log(html[0].text);
-                console.log(model + " " + template + " " + size + " " + manufacturer);
-                $(".modal-title").text("Edit asset");
-                $("#modalform").attr("action", "asset/update");
-                $("#inputName").val(html[0].text);
-                $("#inputTemplate").val(template);
-                $("#inputModel").val(model);
-                $("#inputManufacturer").val(manufacturer);
-                $("#inputType").val(type.toString());
-                $("#inputSize").val(size);
-                $("#inputServerId").val(serverId);
-                $("#inputUserId").val(userId);
-                $('#inputTeamId').val(teamId);
-                $('#inputLocation').val(location);
-                $('#inputPosition').val(position);
-                $('#inputCreateTime').val(createtime);
-                $('#inputNumber').val(number);
-                var radiobutton = $('#inputDiscard');
-                setCheckedValue(document.forms['modalform'].elements['inputDiscard'], discard)
-                $("#inputId").val(id);
-            }
-
-        });
-    });
-
-    $(function()
-    {
-        $('button#Transfer').on('click', function()
-        {
-            var id = $(event.target).closest('tr').find('#id').text();
-            var type = $(event.target).closest('tr').find('#type').text();
-            var userId = $(event.target).closest("tr").find("#userId").text();
-            $("#assetId").val(id);
-            $("#assetType").val(type);
-            $("#sourceName").val(userId);
-            $.getJSON("/api/users", function(data)
-            {
-                var listItems;
-                $.each(data, function(i, val)
-                {
-                    listItems += "<option value='" + val.username + "'>" + val.username + "</option>";
-                });
-                $("#inputUserName").html(listItems);
-            });
-        });
-    });
-
-    $(function()
-    {
-        $('button#TransferOne').on('click', function()
-        {
-            var id = $("#assetId").val();
-            var type = $("#assetType").val();
-            var source = $("#sourceName").val();
-            var dest = $('#inputUserName').val();
-            var changeInfo = {
-                id: id,
-                type: type,
-                source: source,
-                dest: dest
-            }
-            putChange(changeInfo);
-        });
-    });
-
-    function getNowFormatDate()
-    {
-        var date = new Date();
-        var seperator1 = "-";
-        var seperator2 = ":";
-        var month = date.getMonth() + 1;
-        var strDate = date.getDate();
-        if (month >= 1 && month <= 9)
-        {
-            month = "0" + month;
-        }
-        if (strDate >= 0 && strDate <= 9)
-        {
-            strDate = "0" + strDate;
-        }
-        var currentdate = date.getYear() + seperator1 + month + seperator1 + strDate + " " + date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
-        return currentdate;
-    }
-    $(function()
-    {
-        $('button#Add').on('click', function()
-        {
-            $(".modal-title").text("Add asset");
-            $("#modalform").attr("action", "asset/add");
-            $("#inputName").val("");
-            $("#inputNumber").val("");
-            $('#inputType option:eq(0)').attr('selected', 'selected');
-           // $('#inputServerId option:eq(1)').attr('selected', 'selected');
-            $('#inputServerId').val(-1);
-            $('#inputUserId option:eq(0)').attr('selected', 'selected');
-            $('#inputLocation option:eq(0)').attr('selected', 'selected');
-            $('#inputPosition option:eq(0)').attr('selected', 'selected');
-            $('#inputSize option:eq(0)').attr('selected', 'selected');
-            var myDate = new Date();
-            var mytime = myDate.toLocaleString(); //获取当前时间
-            var formattime = moment(mytime).format('YYYY-MM-DD HH:MM:SS')
-            $('#inputCreateTime').val(formattime);
-            $("input[name=Discard][value='0']").prop("checked", true);
-            setCheckedValue(document.forms['modalform'].elements['inputDiscard'], 0)
-        });
-    });
     </script>
     <script>
-    function getTemplateInfo(val)
-    {
-        var templateOpt = $("#inputTemplate :selected").text();
-        console.log(val);
-        if (templateOpt == "Select Template")
-        {
-            $('#inputModel option:eq(0)').attr('selected', 'selected');
-            $('#inputType option:eq(0)').attr('selected', 'selected');
-            $('#inputManufacturer option:eq(0)').attr('selected', 'selected');
-            $('#inputSize option:eq(0)').attr('selected', 'selected');
-        }
-        else
-        {
-            $.ajax(
-            {
-                type: "GET",
-                url: "/api/templates/" + val,
-                success: function(data)
-                {
-                    console.log(data[0]);
-                    $('#inputModel').val(data[0].model);
-                    $('#inputType').val(data[0].type);
-                    $('#inputManufacturer').val(data[0].manufacturer);
-                    $('#inputSize').val(data[0].size);
-                }
-            });
-        }
-
-    }
-
-
-
-    function getDetailInfo(id)
-    {
-        $.ajax(
-        {
-            type: "GET",
-            url: "/api/details/" + id,
-            success: function(data)
-            {
-                console.log(data[0]);
-                $('#DetailName').text(data[0].name);
-                $('#DetailType').text(data[0].type);
-                $('#DetailBarcode').text(data[0].barcode);
-                $('#DetailIP').text(data[0].ip);
-                $('#DetailDescription').text(data[0].description);
-            }
-        });
-    }
-
-    function putChange(ChangeInfo)
-    {
-        $.ajax(
-        {
-            url: "/api/transfer/",
-            type: 'POST',
-            data:
-            {
-                "id": ChangeInfo.id,
-                "type": ChangeInfo.type,
-                "source": ChangeInfo.source,
-                "dest": ChangeInfo.dest
-            },
-            success: function(result)
-            {
-                $.ajax(
-                {
-                    url: "/api/asset/" + ChangeInfo.id,
-                    type: 'PUT',
-                    data:
-                    {
-                        "dest": ChangeInfo.dest
-                    },
-                    success: function(result)
-                    {
-                        location.reload();
-                    }
-                });
-            }
-        });
-    }
-
-    function putBatchChange(ChangeInfo, count)
-    {
-        $.ajax(
-        {
-            url: "/api/transfer/",
-            type: 'POST',
-            data:
-            {
-                "id": ChangeInfo.id,
-                "type": ChangeInfo.type,
-                "source": ChangeInfo.source,
-                "dest": ChangeInfo.dest
-            },
-            success: function(result)
-            {
-                $.ajax(
-                {
-                    url: "/api/asset/" + ChangeInfo.id,
-                    type: 'PUT',
-                    data:
-                    {
-                        "dest": ChangeInfo.dest
-                    },
-                    success: function(result)
-                    {
-                        transcount--;
-                        if (transcount == 0)
-                            location.reload();
-                    }
-                });
-            }
-        });
-    }
-    var transcount = 0;
-    $(function()
-    {
-        $('button#Delete').on('click', function()
-        {
-            var oTT = TableTools.fnGetInstance('mytable');
-            var aSelectedTrs = oTT.fnGetSelectedData();
-            if (aSelectedTrs != null)
-                $.each(aSelectedTrs, function(i, value)
-                {
-                    console.log(value[0]);
-                    $.ajax(
-                    {
-                        url: "/api/details/" + value[0],
-                        type: 'DELETE',
-                        success: function(result)
-                        {
-                            console.log("delete detail");
-                        }
-                    });
-                    $.ajax(
-                    {
-                        url: "/api/asset/" + value[0],
-                        type: 'DELETE',
-                        success: function(result)
-                        {
-                            console.log("delete resource");
-                            location.reload();
-                        }
-
-                    });
-                })
-        });
-    });
-
-
-    $(function()
-    {
-        $('button#TransferAll').on('click', function()
-        {
-            $.getJSON("/api/users", function(data)
-            {
-                var listItems;
-                $.each(data, function(i, val)
-                {
-                    listItems += "<option value='" + val.username + "'>" + val.username + "</option>";
-                });
-                $("#transferAllInputUserName").html(listItems);
-            });
-
-        });
-    });
-    $(function()
-    {
-        $('button#transferAllSubmit').on('click', function()
-        {
-            var oTT = TableTools.fnGetInstance('mytable');
-            var aSelectedTrs = oTT.fnGetSelectedData();
-            if (aSelectedTrs != null)
-                var id = $("#assetId").val();
-            var type = $("#assetType").val();
-            var source = $("#sourceName").val();
-            var dest = $('#transferAllInputUserName').val();
-            console.log(aSelectedTrs.length);
-            transcount = aSelectedTrs.length;
-            $.each(aSelectedTrs, function(i, value)
-            {
-                var changeInfo = {
-                    id: value[0],
-                    type: value[3],
-                    source: value[8],
-                    dest: dest
-                }
-                console.log(changeInfo);
-                putBatchChange(changeInfo);
-            })
-        });
-    });
     </script>
 </head>
 
 <body>
     <% include nav %>
         <div class="container">
-            <h1>Asset Managment</h1>
-            <!--     <form method="post" enctype="multipart/form-data" action="/asset/file-upload">
-  <input id="fulAvatar" name="fulAvatar" type="file" class="form-control" />   
-  <input type="submit" class="btn btn-primary" id="btnSub">
-</form> -->
+            <h1>Asset Management</h1>
             <div class="table-responsive">
                 <table id="mytable" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <!--             <th style="width:5%" >Id</th>
-            <th style="width:6%" >Name</th>
-            <th style="width:6%" >Template</th>
-            <th style="width:5%" >Type</th>
-            <th style="width:6%" >Manufa</th>
-            <th style="width:6%" >Model</th>
-            <th style="width:10%" >Size</th>
-            <th style="width:10%" >Server</th>
-            <th style="width:10%" >User</th>
-            <th style="width:10%" >Team</th>
-            <th style="width:10%" >Location</th>
-            <th style="width:9%" >Position</th>
-            <th style="width:15%" >Number</th>
-            <th style="width:15%" >Create Time</th>
-            <th style="width:15%" >Discard</th> -->
                             <th>Id</th>
                             <th>Name</th>
-                            <th>Template</th>
+                            <th hidden='true'>Template</th>
                             <th>Type</th>
                             <th>Manufa</th>
                             <th>Model</th>
@@ -597,11 +59,32 @@
                             <th>Number</th>
                             <th>Create Time</th>
                             <th>Discard</th>
+                            <th>Status</th>
                             <!--             <th style="width:5%" >Trans</th> -->
                         </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th hidden='true'>Template</th>
+                            <th>Type</th>
+                            <th>Manufa</th>
+                            <th>Model</th>
+                            <th>Size</th>
+                            <th>Server</th>
+                            <th>User</th>
+                            <th>Team</th>
+                            <th>Location</th>
+                            <th>Position</th>
+                            <th>Number</th>
+                            <th>Create Time</th>
+                            <th>Discard</th>
+                            <th>Status</th>
+                        </tr>
+                    </tfoot>
                     <tbody>
-                        <%if(typeof allResourceInfo==='undefined' )%>
+                        <%if(typeof allResourceInfo !='undefined' )%>
                             <%{%>
                                 <% allResourceInfo.forEach(function(resourceInfo) { %>
                                     <tr>
@@ -609,48 +92,27 @@
                                             <%=resourceInfo.id %>
                                         </td>
                                         <td id="name">
-                                            <a href="javascript:;" id="Detail" class="detailclass">
-                                                <%=resourceInfo.name %>
-                                            </a>
+                                            <a href="javascript:;" id="Detail" class="detailclass"><%=resourceInfo.name.trim() %></a>
                                         </td>
-                                        <td class="hidden-phone" id="template">
-                                            <%=resourceInfo.template %>
-                                        </td>
-                                        <td class="hidden-phone" id="type">
-                                            <%=resourceInfo.type %>
-                                        </td>
-                                        <td class="hidden-phone" id="manufacturer">
-                                            <%=resourceInfo.manufacturer %>
-                                        </td>
-                                        <td class="hidden-phone" id="model">
-                                            <%=resourceInfo.model %>
-                                        </td>
-                                        <td class="hidden-phone" id="size">
-                                            <%=resourceInfo.size %>
-                                        </td>
-                                        <td class="hidden-phone" id="serverId">
-                                            <%=resourceInfo.serverId %>
-                                        </td>
-                                        <td class="hidden-phone" id="userId">
-                                            <%=resourceInfo.userId %>
-                                        </td>
-                                        <td class="hidden-phone" id="teamId">
-                                            <%=resourceInfo.teamId %>
-                                        </td>
-                                        <td class="hidden-phone" id="location">
-                                            <%=resourceInfo.location %>
-                                        </td>
-                                        <td class="hidden-phone" id="position">
-                                            <%=resourceInfo.position %>
-                                        </td>
-                                        <td class="hidden-phone" id="number">
-                                            <%=resourceInfo.number %>
-                                        </td>
+                                        <td hidden='true' class="hidden-phone" id="template"><%=resourceInfo.template %></td>
+                                        <td class="hidden-phone" id="type"><%=resourceInfo.type %></td>
+                                        <td class="hidden-phone" id="manufacturer"><%=resourceInfo.manufacturer %></td>
+                                        <td class="hidden-phone" id="model"><%=resourceInfo.model %></td>
+                                        <td class="hidden-phone" id="size"><%=resourceInfo.size %></td>
+                                        <td class="serverId" id="serverId"><%=resourceInfo.serverId %></td>
+                                        <td class="hidden-phone" id="userId"><%=resourceInfo.userId %></td>
+                                        <td class="hidden-phone" id="teamId"><%=resourceInfo.teamId %></td>
+                                        <td class="hidden-phone" id="location"><%=resourceInfo.location %></td>
+                                        <td class="hidden-phone" id="position"><%=resourceInfo.position %></td>
+                                        <td class="hidden-phone" id="number"><%=resourceInfo.number %></td>
                                         <td class="hidden-phone" id="createtime">
                                             <%=moment(resourceInfo.createtime).format( 'YYYY-MM-DD HH:MM:SS')%>
                                         </td>
                                         <td class="hidden-phone" id="discard">
                                             <%=resourceInfo.discard %>
+                                        </td>
+                                        <td class="hidden-phone" id="status">
+                                            <%=resourceInfo.status %>
                                         </td>
                                     </tr>
                                     <% }); %>
@@ -664,15 +126,16 @@
                 </button>
                 <button class="btn btn-primary" type="submit" id="Delete">Delete</button>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#TransferAllModal" id="TransferAll">Transfer</button>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</button>
+                <button class="btn btn-primary"  id="Edit">Edit</button>
                 <!-- Edit Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">Add Asset</h4>
                             </div>
+                            <div id="message"></div>
                             <div class="modal-body">
                                 <form class="form-horizontal" action="/asset/add" method="post" id="modalform">
                                     <input type="hidden" id="inputId" name="id">
@@ -688,8 +151,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputType">Template</label>
                                                     <select name="template" id="inputTemplate" onChange="getTemplateInfo(this.value)">
-                                                        <option value="" selected="selected"></option>
-                                                        <option>Select Template</option>
+                                                        <option value="" selected="selected">Select Template</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -699,17 +161,15 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputType">Type</label>
                                                     <select name="type" id="inputType">
-                                                        <option value="" selected="selected"></option>
-                                                        <option>Select Type</option>
+                                                        <option value="" selected="selected">Select Type</option>
                                                     </select>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="control-group">
-                                                    <label class="control-label" for="inputServerId">Manufacturer</label>
+                                                    <label class="control-label" for="inputManufacturer">Manufacturer</label>
                                                     <select name="manufacturer" id="inputManufacturer">
-                                                        <option value="" selected="selected"></option>
-                                                        <option>Select Manufacturer</option>
+                                                        <option value="" selected="selected">Select</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -717,10 +177,9 @@
                                         <tr>
                                             <td>
                                                 <div class="control-group">
-                                                    <label class="control-label" for="inputUserId">Model</label>
+                                                    <label class="control-label" for="inputModel">Model</label>
                                                     <select name="model" id="inputModel">
-                                                        <option value="" selected="selected"></option>
-                                                        <option>Select Model</option>
+                                                        <option value="" selected="selected">Select Model</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -728,8 +187,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputSize">Size</label>
                                                     <select id="inputSize" name="size">
-                                                        <option value="" selected="selected"></option>
-                                                        <option>Select Size</option>
+                                                        <option value="" selected="selected">Select Size</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -739,16 +197,15 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputServerId">Server</label>
                                                     <select name="serverId" id="inputServerId">
-                                                        <option value="" selected="selected"></option>
-                                                        <option value="-1">-1</option>
+                                                        <option value="None" selected="selected">None</option>
                                                     </select>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="control-group">
-                                                    <label class="control-label" for="inputUserId">User</label>
-                                                    <select name="userId" id="inputUserId">
-                                                        <option value="" selected="selected"></option>
+                                                    <label class="control-label" for="inputLocation">Location</label>
+                                                    <select name="location" id="inputLocation">
+                                                        <option value="" selected="selected">Select Location</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -758,16 +215,15 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputTeamId">Team</label>
                                                     <select name="teamId" id="inputTeamId">
-                                                        <option>Select Team</option>
-                                                        <option value="" selected="selected"></option>
+                                                        <option value="" selected="selected">Select Team</option>
                                                     </select>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="control-group">
-                                                    <label class="control-label" for="inputLocation">Location</label>
-                                                    <select name="location" id="inputLocation">
-                                                        <option value="" selected="selected"></option>
+                                                    <label class="control-label" for="inputUserId">User</label>
+                                                    <select name="userId" id="inputUserId">
+                                                        <option value="">Select User</option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -777,7 +233,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputPosition">Position</label>
                                                     <select name="position" id="inputPosition">
-                                                        <option value="" selected="selected"></option>
+                                                        <option value="" selected="selected">Select Position </option>
                                                     </select>
                                                 </div>
                                             </td>
@@ -785,6 +241,25 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputNumber">Number</label>
                                                     <input type="text" id="inputNumber" placeholder="Number" name="number">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="inputDiscard">Discard</label>
+                                                    <div class="controls">
+                                                        <input type="radio" name="discard" value="1" id="inputDiscard" /> Yes
+                                                        <input type="radio" name="discard" value="0" id="inputDiscard" /> No
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="inputStatus">Status</label>
+                                                    <select name="status" id="inputStatus">
+                                                        <option value="" selected="selected">Select Status </option>
+                                                    </select>
                                                 </div>
                                             </td>
                                         </tr>
@@ -808,22 +283,15 @@
                                                 {
                                                     $('#datetimepicker1').datetimepicker(
                                                     {
-                                                        format: "YYYY-MM-DD HH:MM:SS"
+                                                        format: "YYYY-MM-DD HH:MM"
                                                     });
                                                 });
                                                 </script>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="control-group">
-                                        <label class="control-label" for="inputDiscard">Discard</label>
-                                        <div class="controls">
-                                            <input type="radio" name="discard" value="1" id="inputDiscard" /> Yes
-                                            <input type="radio" name="discard" value="0" id="inputDiscard" /> No
-                                        </div>
-                                    </div>
                                     <div class="modal-footer">
-                                        <input type="submit" class="btn btn-primary" value="Save changes"></input>
+                                        <input type="submit" class="btn btn-primary" id="saveSubmit" value="Save changes"></input>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
                                 </form>
@@ -925,10 +393,14 @@
                         <div class="modal-body">
                             <form class="form-horizontal" id="modalform">
                                 <div class="control-group">
-                                    <label class="control-label" for="transferAllInputUserName">Name</label>
+                                    <label class="control-label" for="transfTransferAllerAllInputUserName">Name</label>
                                     <div class="controls">
-                                        <select name="dest" id="transferAllInputUserName">
+                                        <select name="dest" id="transferAllInputUserName" onChange="getUserInfo(this.value)">
                                         </select>
+                                    </div>
+                                    <label class="control-label" for="transferAllInputUserName">Team:</label>
+                                    <div class="controls">
+                                        <input id="teamName" name="teamName" disabled="disabled">
                                     </div>
                                 </div>
                         </div>

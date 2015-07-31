@@ -74,6 +74,7 @@ app.delete('/api/locations/:id',api.deleteLab);
 // //api of teams
 
 app.get('/api/teams',api.findAllTeams);
+app.get('/api/teams/:name',api.findTeamUsers);
 app.delete('/api/teams/:id',api.deleteTeam);
 
 //api of type
@@ -82,6 +83,7 @@ app.delete('/api/types/:id',api.deleteType);
 
 //api for deleting user
 app.get('/api/users/',api.findAllUsers);
+app.get('/api/users/:id',api.findOneUsers);
 app.delete('/api/users/:id',api.deleteUser);
 
 
@@ -89,7 +91,12 @@ app.delete('/api/users/:id',api.deleteUser);
 app.delete('/api/asset/:id',api.deleteResource);
 app.get('/api/serverId',api.selectServerId);
 app.get('/api/asset',api.selectResources);
+app.get('/api/asset/:id',api.selectOneResources);
+app.get('/api/asset/byuser/:name',api.findAssetByUsers);
+app.get('/api/asset/byteam/:team',api.findAssetByTeam);
 app.put('/api/asset/:id',api.updateResource);
+
+app.put('/api/asset/update/:id',api.updateResourceBatch);
 
 //api for template operation
 app.get('/api/templates',api.findAllTemplate);
@@ -130,6 +137,11 @@ app.delete('/api/size/:id',api.deleteSize);
 //api of the manu
 app.get('/api/manu',api.findAllManu);
 app.delete('/api/manu/:id',api.deleteManu);
+
+
+app.get('/api/roles',api.findAllRoles);
+
+app.get('/api/status',api.findAllStatus);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

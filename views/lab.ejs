@@ -1,132 +1,141 @@
 <!DOCTYPE html>
 <!-- saved from url=(0040)http://getbootstrap.com/examples/signin/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="img/favicon.ico">
-<title>Location Management</title>
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src = "js/bootstrap.js"></script>
-<!-- Bootstrap core CSS -->
-<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+<html lang="en">
 
-<!-- Custom styles for this template -->
-<link href="css/signin.css" rel="stylesheet">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+    <title>Location Management</title>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+    <!-- jQuery -->
+    <!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+    <script>
+    $(document).ready(function()
+    {
+        $('#mytable2').DataTable();
+        $('#saveSubmit').on('click', function()
+        {
+            console.log('hahah');
+            var name = $("#inputName").val().trim();
+            $("#inputName").val(name);
+            if (name.length == 0)
+            {
+                event.preventDefault();
+            }
 
-
-<!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
-  
-<!-- jQuery -->
-<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-
-
-      <script>
-      $(document).ready( function () {
-    $('#mytable2').DataTable();
-} );
-            $(function(){
-        $('button#Edit').on('click', function(){
-          var id = $(event.target).closest('tr').find('#id').text();
-          var username = $(event.target).closest('tr').find('#username').text();
-          console.log(id +" "+username);
-          //console.log(userId);
-          $(".modal-title").text("Edit location");
-          $("#modalform").attr("action","location/update");
-          $("#inputName").val(username);
-          $('#inputId').val(id);
         });
-      });
-            $(function(){
-        $('button#Add').on('click', function(){
-          $(".modal-title").text("Add location");
-          $("#modalform").attr("action","location/add");
-          $("#inputName").val("");
-          // $("#inputPassword").val("");
-          // $("#inputTeam").val();
-          // $("#inputEmail").val("");
-          // $("#inputRole").val();
+    });
+    $(function()
+    {
+        $('button#Edit').on('click', function()
+        {
+            $('#message').html('');
+            var id = $(event.target).closest('tr').find('#id').text();
+            var username = $(event.target).closest('tr').find('#username').text();
+            console.log(id + " " + username);
+            $(".modal-title").text("Edit location");
+            $("#modalform").attr("action", "location/update");
+            $("#inputName").val(username);
+            $('#inputId').val(id);
         });
-      });
-      </script>
-    </head>
+    });
+    $(function()
+    {
+        $('button#Add').on('click', function()
+        {
+            $('#message').html('');
+            $(".modal-title").text("Add location");
+            $("#modalform").attr("action", "location/add");
+            $("#inputName").val("");
+        });
+    });
+    </script>
+</head>
 
-    <body>
-      <% include nav %>
-      <div class = "container">
-        <h1>Location</h1>
-    <!--     <div class="table-responsive"> -->
-          <table id = "mytable2"  class="display">
-            <thead>
-              <tr>
-                <th >Id</th>
-                <th >Name</th>
-                <th >Action</th>
-                <th >Action</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <% allLabInfo.forEach(function(teamInfo) { %>
-              <tr>
-                <td id="id"><%= teamInfo.id %></td>
-                <td id="username"><%= teamInfo.name %></td>
-
-                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-                </td>
-
-                                <td >
-                <div class="btn-group"><a href="\location\delete\<%= teamInfo.id %>" class="btn btn-primary">Delete</a>
-                  </div>
-                </td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
-  <!--       </div> -->
-        <div class="form-actions">
-          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
-            Add
-          </button>
-<!--           <button class="btn btn-lg btn-primary" type="submit">Delete</button> -->
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add User</h4>
-              </div>
-              <div class="modal-body">
-               <form class="form-horizontal" action="/location/update" method="post" name="modalform" id="modalform">
-                <input type="hidden" id="inputId" name="id"></input>
-                <div class="control-group">
-                  <label class="control-label" for="inputName">Name</label>
-                  <div class="controls">
-                    <input type="text" id="inputName" placeholder="Name" name="name">
-                  </div>
-                </div>
-                  <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" value="Save changes"></input>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </form>
-              </div>
-
+<body>
+    <% include nav %>
+        <div class="container">
+            <h1>Location Management</h1>
+            <!--     <div class="table-responsive"> -->
+            <table id="mytable2" class="display">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% allLabInfo.forEach(function(teamInfo) { %>
+                        <tr>
+                            <td id="id">
+                                <%=t eamInfo.id %>
+                            </td>
+                            <td id="username">
+                                <%=t eamInfo.name %>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
+                            </td>
+                            <td>
+                                <div class="btn-group"><a href="\location\delete\<%= teamInfo.id %>" class="btn btn-primary">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+            <div class="alert">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Warning!</strong> Best check yo self, you're not looking too good.
             </div>
-          </div>
-        </div>
-
-
-
-      </body>
-
+            <!--       </div> -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
+                    Add
+                </button>
+                <!--           <button class="btn btn-lg btn-primary" type="submit">Delete</button> -->
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Add User</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" action="/location/update" method="post" name="modalform" id="modalform">
+                                <input type="hidden" id="inputId" name="id"></input>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputName">Name</label>
+                                    <div class="controls">
+                                        <input type="text" id="inputName" placeholder="Name" name="name">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-primary" value="Save changes" id="saveSubmit"></input>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>

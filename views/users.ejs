@@ -1,235 +1,303 @@
 <!DOCTYPE html>
 <!-- saved from url=(0040)http://getbootstrap.com/examples/signin/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="img/favicon.ico">
-<title>User Management</title>
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src = "js/bootstrap.js"></script>
-<!-- Bootstrap core CSS -->
-<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+<html lang="en">
 
-<!-- Custom styles for this template -->
-<link href="css/signin.css" rel="stylesheet">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+    <title>User Management</title>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+    <!-- jQuery -->
+    <!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
+    <link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/extensions/TableTools/css/dataTables.tableTools.css">
+    <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+    <script>
+    $(document).ready(function()
+    {
+        $('#mytable2').DataTable(
+        {
+            dom: 'T<"clear">lfrtip',
+            tableTools:
+            {
+                "sSwfPath": "/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+                "sRowSelect": "multi",
+                "aButtons": ["select_all", "select_none",
+                    "copy",
+                    "print",
+                    "csv",
+                    "xls",
+                    "pdf"
+                ]
+            }
+        });
+        $('#saveSubmit').on('click', function()
+        {
+            var password = $("#inputPassword").val().trim();
+            $("#inputPassword").val(password);
+            if (password.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Password can not be empty</div>');
+                return ;
+            }
+            var email = $("#inputEmail").val().trim();
 
+            var name = $("#inputName").val().trim();
+            $("#inputName").val(name);
+            if (name.length == 0)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name can not be empty</div>');
+                return ;
+            }
 
-<!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
-  
-<!-- jQuery -->
-<!-- <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.js"></script> -->
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/extensions/TableTools/js/dataTables.tableTools.js"></script>
-<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/media/css/jquery.dataTables.css">
-
-<link rel="stylesheet" type="text/css" href="/DataTables-1.10.7/extensions/TableTools/css/dataTables.tableTools.css">
-<script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
-
-      <script>
-  $(document).ready(function() {
-    $('#mytable2').DataTable( {
-        dom: 'T<"clear">lfrtip',
-        tableTools: {
-            "sSwfPath": "/DataTables-1.10.7/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
-            "sRowSelect": "multi",
-            "aButtons": [ "select_all", "select_none",
-            "copy",
-                "print",
-                "csv", 
-                "xls", 
-                "pdf"
-                 ]
+            $("#inputEmail").val(email);
+        });
+        $('#mytable2').DataTable();
+        var role = $('#role').val().trim();
+        var name = $('#name').val().trim();
+        var team = $("#team").val().trim();
+        console.log(role);
+        if (role == 2)
+        //admin
+        {
+            var listItems;
+            listItems += "<option value='" + team + "'>" + team + "</option>";
+            $("#inputTeam").html(listItems);
+          //  $("#inputTeam").prop("disabled", true);
         }
-    } );
-} ); 
-      $(document).ready( function () {
-    $('#mytable2').DataTable();
-} );
-            $(function(){
-        $('button#Edit').on('click', function(){
-          var id = $(event.target).closest('tr').find('#id').text();
-          var username = $(event.target).closest('tr').find('#username').text();
-          var password = $(event.target).closest('tr').find('#password').text(); 
-          var teamid = $(event.target).closest('tr').find("#teamid").text();
-          var emailaddress = $(event.target).closest('tr').find("#emailaddress").text();
-          var role = $(event.target).closest("tr").find("#role").text();
-          console.log(id +" "+username+" "+password+" "+teamid+" "+emailaddress+" " +role);
-          //console.log(userId);
-          $(".modal-title").text("Edit user");
-          $("#modalform").attr("action","users/update");
-          $("#inputName").val(username);
-          $("#inputPassword").val(password);
-          $("#inputTeam").val(teamid);
-          $("#inputEmail").val(emailaddress);
-         // $("#inputRole").val(role);
-//$('select[name="' + inputRole + '"] option:selected').text(role);
-function setSelectedIndex(s, v) {
-for ( var i = 0; i < s.options.length; i++ ) {
-if ( s.options[i].text == v ) {
-s.options[i].selected = true;
-return;
-}
-}
-}
-setSelectedIndex(document.getElementById('inputRole'),role);
-          $('#inputId').val(id);
+        else
+        //super admin
+        {
+            $.getJSON("/api/teams", function(data)
+            {
+                var listItems;
+                $.each(data, function(i, val)
+                {
+                    //  console.log(val.name);
+                    listItems += "<option value='" + val.name.trim() + "'>" + val.name.trim() + "</option>";
+                });
+                $("#inputTeam").html(listItems);
+            });
+        }
+        $.getJSON("/api/roles", function(data)
+        {
+            var rolelistItems;
+            $.each(data, function(i, val)
+            {
+                console.log(val);
+                if (val.id >= role)
+                {
+                    rolelistItems += "<option value='" + val.id + "'>" + val.name + "</option>";
+                }
+
+            });
+            $("#inputRole").html(rolelistItems);
         });
-      });
-            $(function(){
-        $('button#Add').on('click', function(){
-          $(".modal-title").text("Add user");
-          $("#modalform").attr("action","users/add");
-          $("#inputName").val("");
-          $("#inputPassword").val("");
-          $("#inputTeam").val();
-          $("#inputEmail").val("");
-          $("#inputRole").val();
+
+    });
+    $(function()
+    {
+        $('button#Edit').on('click', function()
+        {
+            $('#message').html('');
+            var id = $(event.target).closest('tr').find('#id').text().trim();
+            var username = $(event.target).closest('tr').find('#username').text().trim();
+            var password = $(event.target).closest('tr').find('#password').text().trim();
+            var teamid = $(event.target).closest('tr').find("#teamid").text().trim();
+            var emailaddress = $(event.target).closest('tr').find("#emailaddress").text().trim();
+            var role = $(event.target).closest("tr").find("#role").text().trim();
+            console.log(id + " " + username + " " + password + " " + teamid + " " + emailaddress + " " + role);
+            //console.log(userId);
+            $(".modal-title").text("Edit user");
+            $("#modalform").attr("action", "users/update");
+            $("#inputName").val(username);
+            $("#inputPassword").val(password);
+            $("#inputTeam").val(teamid);
+            $("#inputEmail").val(emailaddress);
+            // $("#inputRole").val(role);
+            //$('select[name="' + inputRole + '"] option:selected').text(role);
+            function setSelectedIndex(s, v)
+            {
+                for (var i = 0; i < s.options.length; i++)
+                {
+                    if (s.options[i].text == v)
+                    {
+                        s.options[i].selected = true;
+                        return;
+                    }
+                }
+            }
+            setSelectedIndex(document.getElementById('inputRole'), role);
+            $('#inputId').val(id);
         });
-      });
-
-
-$(function(){
-  $('button#Delete').on('click', function()
-  {
-    var oTT = TableTools.fnGetInstance( 'mytable2' );
-    var aSelectedTrs = oTT.fnGetSelectedData();
-    if(aSelectedTrs != null)
-      $.each(aSelectedTrs, function(i, value) 
-      {
-        console.log(value[0]);
-        $.ajax({
-          url: "/api/users/" +value[0],
-          type: 'DELETE',
-          success: function(result) 
-          {
-            console.log(value[0]);
-          }
+    });
+    $(function()
+    {
+        $('button#Add').on('click', function()
+        {
+            $('#message').html('');
+            $(".modal-title").text("Add user");
+            $("#modalform").attr("action", "users/add");
+            $("#inputName").val("");
+            $("#inputPassword").val("");
+            $("#inputTeam").val();
+            $("#inputEmail").val("");
+            $("#inputRole").val();
         });
-        location.reload();
-      })
-});
-});
+    });
 
+    var deleteCount = 0;
 
-      </script>
-    </head>
+    $(function()
+    {
+        $('button#Delete').on('click', function()
+        {
+            var oTT = TableTools.fnGetInstance('mytable2');
+            var aSelectedTrs = oTT.fnGetSelectedData();
+            var deleteCount = aSelectedTrs.length;
+            if (aSelectedTrs != null)
+                $.each(aSelectedTrs, function(i, value)
+                {
+                    console.log(value[0]);
+                    $.ajax(
+                    {
+                        url: "/api/users/" + value[0],
+                        type: 'DELETE',
+                        success: function(result)
+                        {
+                             deleteCount--;
+                             if (deleteCount == 0)
+                                 location.reload();
+                        }
+                    });
+                })
+        });
+    });
+    </script>
+</head>
 
-    <body>
-      <% include nav %>
-      <div class = "container">
-        <h1>User Management</h1>
-    <!--     <div class="table-responsive"> -->
-          <table id = "mytable2"  class="display">
-            <thead>
-              <tr>
-                <th >Id</th>
-                <th >Name</th>
-                <th >Password</th>
-                <th  >Team</th>
-                <th  >Email Address</th>
-                <th >Role</th>
-                <th >Action</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <% allUsersInfo.forEach(function(userInfo) { %>
-              <tr>
-                <td id="id"><%= userInfo.id %></td>
-                <td id="username"><%= userInfo.username %></td>
-                <td id="password"><%= userInfo.password %></td>
-                <td id="teamid"><%= userInfo.teamid %></td>
-                <td id="emailaddress"><%= userInfo.emailaddress %></td>
-                <td  id="role"><%= userInfo.role %></td>
-                 <td ><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
-                </td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
-  <!--       </div> -->
-        <div class="form-actions">
-          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
-            Add
-          </button>
-          <button class="btn btn-lg btn-primary" type="submit" id="Delete">Delete</button>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add User</h4>
-              </div>
-              <div class="modal-body">
-               <form class="form-horizontal" action="/users/update" method="post" name="modalform" id="modalform">
-                <input type="hidden" id="inputId" name="id"></input>
-                <div class="control-group">
-                  <label class="control-label" for="inputName">Name</label>
-                  <div class="controls">
-                    <input type="text" id="inputName" placeholder="Name" name="name">
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label" for="inputPassword">Password</label>
-                  <div class="controls">
-                    <input type="text" id="inputPassword" placeholder="Password" name="password">
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <label class="control-label" for="inputTeam">team</label>
-                  <div class="controls">
-                    <select name="teamid" id="inputTeam">
-                  <% allTeams.forEach(function(teamInfo) { %>
-                    <option><%= teamInfo.name %></option>
-                  <% }); %>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <label class="control-label" for="inputEmail">Email Address</label>
-                  <div class="controls">
-                    <input type="text" id="inputEmail" placeholder="Email Address" name="emailaddress">
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <label class="control-label" for="inputEmail">Role</label>
-                  <div class="controls">
-                    <select name="role" id="inputRole">
-                                        <% allRoles.forEach(function(RoleInfo) { %>
-                    <option value=<%= RoleInfo.id %> ><%= RoleInfo.name %></option>
-                  <% }); %>
-<!--                       <option>1</option>
-                        <option>2</option>
-                        <option>3</option> -->
-                      </select>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" value="Save changes"></input>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </form>
-              </div>
-
+<body>
+    <% include nav %>
+        <div class="container">
+            <h1>User Management</h1>
+            <!--     <div class="table-responsive"> -->
+            <table id="mytable2" class="display">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Password</th>
+                        <th>Team</th>
+                        <th>Email Address</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% allUsersInfo.forEach(function(userInfo) { %>
+                        <tr>
+                            <td id="id">
+                                <%=userInfo.id %>
+                            </td>
+                            <td id="username">
+                                <%=userInfo.username %>
+                            </td>
+                            <td id="password">
+                                <%=userInfo.password %>
+                            </td>
+                            <td id="teamid">
+                                <%=userInfo.teamid %>
+                            </td>
+                            <td id="emailaddress">
+                                <%=userInfo.emailaddress %>
+                            </td>
+                            <td id="role">
+                                <%=userInfo.role %>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="Edit">Edit</a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+            <!--       </div> -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="Add">
+                    Add
+                </button>
+                <button class="btn btn-lg btn-primary" type="submit" id="Delete">Delete</button>
             </div>
-          </div>
-        </div>
-
-
-
-      </body>
-
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Add User</h4>
+                        </div>
+                        <div id="message"></div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" action="/users/update" method="post" name="modalform" id="modalform">
+                                <input type="hidden" id="inputId" name="id"></input>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputName">Name *</label>
+                                    <div class="controls">
+                                        <input type="text" id="inputName" placeholder="Name" name="name">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputPassword">Password *</label>
+                                    <div class="controls">
+                                        <input type="text" id="inputPassword" placeholder="Password" name="password">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputTeam">team</label>
+                                    <div class="controls">
+                                        <select name="teamid" id="inputTeam">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputEmail">Email Address</label>
+                                    <div class="controls">
+                                        <input type="text" id="inputEmail" placeholder="Email Address" name="emailaddress">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="inputEmail">Role</label>
+                                    <div class="controls">
+                                        <select name="role" id="inputRole">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-primary" value="Save changes" id='saveSubmit'></input>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
