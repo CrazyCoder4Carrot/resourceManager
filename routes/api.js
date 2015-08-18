@@ -508,6 +508,25 @@ exports.selectResources = function selectResources(req, res)
         });
     }
 }
+exports.selectResourcesByStatus = function selectResourcesByStatus(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var status = req.params.status;
+        db.queryResourceStatus(sess.results, status, function(err, queryResults)
+        {
+            if (queryResults)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+}
 
 exports.selectOneResources = function selectOneResources(req, res)
 {
@@ -652,7 +671,8 @@ exports.updateResourceBatch = function updateResourceBatch(req, res)
             manufacturer: req.body.manufacturer,
             model: req.body.model,
             status: req.body.status,
-            assetId: id
+            assetId: id,
+            check: req.body.check
         }
         console.log(resourceInfo);
         db.updateResourceBatch(resourceInfo, function(err, queryResults)
@@ -885,6 +905,31 @@ exports.findAssetByUsers = function findAssetByUsers(req, res)
         res.redirect('/login');
     }
 }
+exports.findAssetByUserStatus = function findAssetByUserStatus(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        console.log(req.params);
+        var name = req.params.user;
+        var status = req.params.status;
+        db.selectAssetByUserStatus(name,status, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
 exports.findAssetByTeam = function findAssetByTeam(req, res)
 {
     var sess = req.session;
@@ -892,6 +937,30 @@ exports.findAssetByTeam = function findAssetByTeam(req, res)
     {
         var team = req.params.team;
         db.selectAssetByTeam(team, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findAssetByTeamStatus = function findAssetByTeamStatus(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var team = req.params.team;
+        var status = req.params.status;
+        db.selectAssetByTeamStatus(team, status, function(err, queryResults)
         {
             if (!err)
             {
@@ -919,6 +988,290 @@ exports.findAllStatus = function findAllStatus(req, res)
             if (!err)
             {
                 res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.findManuName = function findManuName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.IsManuNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findSizeName = function findSizeName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.IsSizeNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.findModelName = function findModelName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.IsModelNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findPositionName = function findPositionName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.doesPositionNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findTypeName = function findTypeName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.doesTypeNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findLocationName = function findLocationName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.doesLocationNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+exports.findTeamName = function findTeamName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.doesTeamNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.findTemplateName = function findTemplateName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.doesTemplateNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.findUserName = function findUserName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.doesUserNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.findAssetName = function findAssetName(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var name = req.params.name;
+        db.doesAssetNameExist(name, function(err, queryResults)
+        {
+            if (!err)
+            {
+                res.send(queryResults);
+            }
+            else
+            {
+                res.send(err);
+            }
+        });
+    }
+    else
+    {
+        res.redirect('/login');
+    }
+}
+
+exports.addResource = function addResource(req, res)
+{
+    var sess = req.session;
+    if (sess.results)
+    {
+        var resourceInfo = {
+            name: req.body.name,
+            template: req.body.template,
+            type: req.body.type,
+            manufacturer: req.body.manufacturer,
+            model: req.body.model,
+            size: req.body.size,
+            serverId: req.body.server,
+            userId: req.body.user,
+            teamId: req.body.team,
+            location: req.body.location,
+            position: req.body.position,
+            createtime: req.body.createtime,
+            discard: req.body.discard,
+            number: req.body.number,
+            status: req.body.status,
+            check: req.body.check
+        }
+        db.insertResource(resourceInfo, function(err, queryResults)
+        {
+            if (!err)
+            {
+                var detailInfo = {
+                    id: queryResults.insertId,
+                    name: resourceInfo.name,
+                    type: resourceInfo.type
+                }
+                db.addDetail(detailInfo, function(err, queryResults)
+                {
+                    res.send(queryResults);
+                });
             }
             else
             {

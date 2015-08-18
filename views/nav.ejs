@@ -36,7 +36,9 @@
     <li role="presentation"><a role="menuitem" tabindex="-1" href="/manufacturer">Manufacturer</a></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" href="/import">Import</a></li>
 <%}%>
-
+    <%if(typeof result != 'undefined' && result.role == 1){%>
+     <li role="presentation"><a role="menuitem" tabindex="-1" href="/check">Check</a></li>
+<%}%>
     </ul>
     </li>
 

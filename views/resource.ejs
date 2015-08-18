@@ -60,6 +60,7 @@
                             <th>Create Time</th>
                             <th>Discard</th>
                             <th>Status</th>
+                            <th>Check</th>
                             <!--             <th style="width:5%" >Trans</th> -->
                         </tr>
                     </thead>
@@ -81,6 +82,7 @@
                             <th>Create Time</th>
                             <th>Discard</th>
                             <th>Status</th>
+                            <th>Check</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -92,19 +94,43 @@
                                             <%=resourceInfo.id %>
                                         </td>
                                         <td id="name">
-                                            <a href="javascript:;" id="Detail" class="detailclass"><%=resourceInfo.name.trim() %></a>
+                                            <a href="javascript:;" id="Detail" class="detailclass">
+                                                <%=resourceInfo.name.trim() %>
+                                            </a>
                                         </td>
-                                        <td hidden='true' class="hidden-phone" id="template"><%=resourceInfo.template %></td>
-                                        <td class="hidden-phone" id="type"><%=resourceInfo.type %></td>
-                                        <td class="hidden-phone" id="manufacturer"><%=resourceInfo.manufacturer %></td>
-                                        <td class="hidden-phone" id="model"><%=resourceInfo.model %></td>
-                                        <td class="hidden-phone" id="size"><%=resourceInfo.size %></td>
-                                        <td class="serverId" id="serverId"><%=resourceInfo.serverId %></td>
-                                        <td class="hidden-phone" id="userId"><%=resourceInfo.userId %></td>
-                                        <td class="hidden-phone" id="teamId"><%=resourceInfo.teamId %></td>
-                                        <td class="hidden-phone" id="location"><%=resourceInfo.location %></td>
-                                        <td class="hidden-phone" id="position"><%=resourceInfo.position %></td>
-                                        <td class="hidden-phone" id="number"><%=resourceInfo.number %></td>
+                                        <td hidden='true' class="hidden-phone" id="template">
+                                            <%=resourceInfo.template %>
+                                        </td>
+                                        <td class="hidden-phone" id="type">
+                                            <%=resourceInfo.type %>
+                                        </td>
+                                        <td class="hidden-phone" id="manufacturer">
+                                            <%=resourceInfo.manufacturer %>
+                                        </td>
+                                        <td class="hidden-phone" id="model">
+                                            <%=resourceInfo.model %>
+                                        </td>
+                                        <td class="hidden-phone" id="size">
+                                            <%=resourceInfo.size %>
+                                        </td>
+                                        <td class="serverId" id="serverId">
+                                            <%=resourceInfo.serverId %>
+                                        </td>
+                                        <td class="hidden-phone" id="userId">
+                                            <%=resourceInfo.userId %>
+                                        </td>
+                                        <td class="hidden-phone" id="teamId">
+                                            <%=resourceInfo.teamId %>
+                                        </td>
+                                        <td class="hidden-phone" id="location">
+                                            <%=resourceInfo.location %>
+                                        </td>
+                                        <td class="hidden-phone" id="position">
+                                            <%=resourceInfo.position %>
+                                        </td>
+                                        <td class="hidden-phone" id="number">
+                                            <%=resourceInfo.number %>
+                                        </td>
                                         <td class="hidden-phone" id="createtime">
                                             <%=moment(resourceInfo.createtime).format( 'YYYY-MM-DD HH:MM:SS')%>
                                         </td>
@@ -114,6 +140,8 @@
                                         <td class="hidden-phone" id="status">
                                             <%=resourceInfo.status %>
                                         </td>
+                                        <td class="hidden-phone" id="check">
+                                            <%=resourceInfo.check%>
                                     </tr>
                                     <% }); %>
                                         <%}%>
@@ -125,10 +153,10 @@
                     Add
                 </button>
                 <button class="btn btn-primary" type="submit" id="Delete">Delete</button>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#TransferAllModal" id="TransferAll">Transfer</button>
-                <button class="btn btn-primary"  id="Edit">Edit</button>
+                <button class="btn btn-primary" id="TransferAll">Transfer</button>
+                <button class="btn btn-primary" id="Edit">Edit</button>
                 <!-- Edit Modal -->
-                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -137,7 +165,7 @@
                             </div>
                             <div id="message"></div>
                             <div class="modal-body">
-                                <form class="form-horizontal" action="/asset/add" method="post" id="modalform">
+                                <form class="form-horizontal" id="modalform">
                                     <input type="hidden" id="inputId" name="id">
                                     <table style="width:100%">
                                         <tr>
@@ -161,7 +189,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputType">Type</label>
                                                     <select name="type" id="inputType">
-                                                        <option value="" selected="selected">Select Type</option>
+                                                        <!-- <option value="" selected="selected">Select Type</option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -169,7 +197,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputManufacturer">Manufacturer</label>
                                                     <select name="manufacturer" id="inputManufacturer">
-                                                        <option value="" selected="selected">Select</option>
+                                                        <!--    <option value="" selected="selected">Select</option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -179,7 +207,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputModel">Model</label>
                                                     <select name="model" id="inputModel">
-                                                        <option value="" selected="selected">Select Model</option>
+                                                        <!--  <option value="" selected="selected">Select Model</option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -187,7 +215,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputSize">Size</label>
                                                     <select id="inputSize" name="size">
-                                                        <option value="" selected="selected">Select Size</option>
+                                                        <!--  <option value="" selected="selected">Select Size</option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -205,7 +233,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputLocation">Location</label>
                                                     <select name="location" id="inputLocation">
-                                                        <option value="" selected="selected">Select Location</option>
+                                                        <!-- <option value="" selected="selected">Select Location</option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -215,7 +243,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputTeamId">Team</label>
                                                     <select name="teamId" id="inputTeamId">
-                                                        <option value="" selected="selected">Select Team</option>
+                                                        <!-- <option value="" selected="selected">Select Team</option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -223,7 +251,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputUserId">User</label>
                                                     <select name="userId" id="inputUserId">
-                                                        <option value="">Select User</option>
+                                                        <!-- <option value="">Select User</option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -233,7 +261,7 @@
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputPosition">Position</label>
                                                     <select name="position" id="inputPosition">
-                                                        <option value="" selected="selected">Select Position </option>
+                                                        <!--  <option value="" selected="selected">Select Position </option> -->
                                                     </select>
                                                 </div>
                                             </td>
@@ -248,18 +276,35 @@
                                             <td>
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputDiscard">Discard</label>
-                                                    <div class="controls">
-                                                        <input type="radio" name="discard" value="1" id="inputDiscard" /> Yes
-                                                        <input type="radio" name="discard" value="0" id="inputDiscard" /> No
-                                                    </div>
+                                                    <select name="discard" id="inputDiscard">
+                                                        <option value="Not Discard" selected="selected">Not Discard</option>
+                                                        <option value="Discard">Discard</option>
+                                                    </select>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="control-group">
                                                     <label class="control-label" for="inputStatus">Status</label>
                                                     <select name="status" id="inputStatus">
-                                                        <option value="" selected="selected">Select Status </option>
+                                                        <!-- <option value="" selected="selected">Select Status </option> -->
                                                     </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="inputCheck">Check</label>
+                                                    <select name="check" id="inputCheck">
+                                                        <option value="Checked" selected="selected">Checked</option>
+                                                        <option value="Uncheck">Uncheck</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="inputCount">Count</label>
+                                                    <input type="text" id="inputCount" placeholder="Count" name="count" value="1">
                                                 </div>
                                             </td>
                                         </tr>
@@ -290,11 +335,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <input type="submit" class="btn btn-primary" id="saveSubmit" value="Save changes"></input>
+                                    
+                                </form>
+                                <div class="modal-footer">
+                                        <button  class="btn btn-primary" id="saveSubmit">Save changes</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -338,7 +384,7 @@
                             <h4 class="modal-title" id="myModalLabel">Asset Detail</h4>
                         </div>
                         <div class="modal-body">
-                            <form class="form-horizontal" action="/asset/add" method="post" id="modalform">
+                            <form class="form-horizontal" id="modalform">
                                 <input type="hidden" id="inputId" name="id">
                                 <table style="width:100%">
                                     <tr>
@@ -388,11 +434,16 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Add Asset</h4>
+                            <h4 class="modal-title" id="myModalLabel">Transfer Asset</h4>
                         </div>
                         <div class="modal-body">
                             <form class="form-horizontal" id="modalform">
                                 <div class="control-group">
+                                    <label class="control-label" for="transfTransferAllerAllInputUserName">Count</label>
+                                    <div class="controls">
+                                        <select name="count" id="transferAllSelectCount">
+                                        </select>
+                                    </div>
                                     <label class="control-label" for="transfTransferAllerAllInputUserName">Name</label>
                                     <div class="controls">
                                         <select name="dest" id="transferAllInputUserName" onChange="getUserInfo(this.value)">
@@ -403,13 +454,14 @@
                                         <input id="teamName" name="teamName" disabled="disabled">
                                     </div>
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="transferAllSubmit">Transfer</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="transferAllSubmit">Transfer</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
+</body>

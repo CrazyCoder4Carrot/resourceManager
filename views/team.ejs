@@ -25,17 +25,40 @@
     <!-- DataTables -->
     <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
     <script>
+    var originalName;
     $(document).ready(function()
     {
         $('#mytable2').DataTable();
         $('#saveSubmit').on('click', function()
         {
+            $("#message").html();
             var name = $("#inputName").val().trim();
             $("#inputName").val(name);
             if (name.length == 0)
             {
                 event.preventDefault();
                 $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name can not be empty</div>');
+            }
+            else
+            {
+                if (originalName != name)
+                {
+                    event.preventDefault();
+                    $.getJSON("api/teams/byName/" + name, function(data)
+                    {
+                        if (data.length != 0)
+                        {
+                            console.log(data);
+                            $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name already exists in the database</div>');
+                            return;
+                        }
+                        else
+                        {
+                            $("#modalform").submit();
+                        }
+                    });
+                }
+
             }
 
         });
@@ -47,6 +70,7 @@
             $('#message').html('');
             var id = $(event.target).closest('tr').find('#id').text().trim();
             var username = $(event.target).closest('tr').find('#username').text().trim();
+            originalName = username;
             $(".modal-title").text("Edit team");
             $("#modalform").attr("action", "team/update");
             $("#inputName").val(username);

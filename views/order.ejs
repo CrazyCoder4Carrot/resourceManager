@@ -96,6 +96,7 @@
         });
         $('#saveSubmit').on('click', function()
         {
+            $("#message").html();
             var category = $("#inputCategory").val().trim();
             $("#inputCategory").val(category);
             if (category.length == 0)
@@ -142,6 +143,12 @@
             {
                 event.preventDefault();
                 $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Comment can not be empty</div>');
+                return;
+            }
+            if ($("#inputTeam").val() == null)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Please select the team</div>');
                 return;
             }
         });

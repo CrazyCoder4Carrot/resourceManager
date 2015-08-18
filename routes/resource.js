@@ -85,7 +85,7 @@ router.post('/add', function(req, res, next)
     if (sess.results)
     {
         var serverId = req.body.serverId;
-        if (!serverId.trim()) 
+        if (!serverId.trim())
         {
             serverId = -1;
         }
@@ -103,8 +103,9 @@ router.post('/add', function(req, res, next)
             position: req.body.position,
             createtime: req.body.createtime,
             discard: req.body.discard,
-            number:req.body.number,
-            status:req.body.status
+            number: req.body.number,
+            status: req.body.status,
+            check: req.body.check
         }
         db.insertResource(resourceInfo, function(err, queryResults)
         {
@@ -113,7 +114,7 @@ router.post('/add', function(req, res, next)
                 var detailInfo = {
                     id: queryResults.insertId,
                     name: resourceInfo.name,
-                    type:resourceInfo.type
+                    type: resourceInfo.type
                 }
                 db.addDetail(detailInfo, function(err, queryResults)
                 {
@@ -153,8 +154,9 @@ router.post('/update', function(req, res, next)
             position: req.body.position,
             createtime: req.body.createtime,
             discard: req.body.discard,
-            number:req.body.number,
-            status:req.body.status
+            number: req.body.number,
+            status: req.body.status,
+            check: req.body.check
         }
         console.log(resourceInfo);
         db.updateResource(resourceInfo, function(err, queryResults)
@@ -272,17 +274,17 @@ router.post('/addtrans', function(req, res, next)
             type: req.body.type,
             source: req.body.source,
             dest: req.body.dest,
-            destteamName:req.body.teamName,
+            destteamName: req.body.teamName,
             date: date.toISOString().slice(0, 19).replace('T', ' ')
         }
-            console.log(resourceInfo);
+        console.log(resourceInfo);
         db.addChange(resourceInfo, function(err, queryResults)
         {
             if (!err)
             {
-                db.updateResourceUser(resourceInfo,function(err, queryResults)
+                db.updateResourceUser(resourceInfo, function(err, queryResults)
                 {
-                    if(!err)
+                    if (!err)
                     {
                         res.redirect('/asset');
                     }

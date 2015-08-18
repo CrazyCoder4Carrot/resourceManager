@@ -50,26 +50,63 @@
         });
         $('#saveSubmit').on('click', function()
         {
+            $("#message").html();
             var password = $("#inputPassword").val().trim();
             $("#inputPassword").val(password);
             if (password.length == 0)
             {
                 event.preventDefault();
                 $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Password can not be empty</div>');
-                return ;
+                return;
+            }
+            if ($("#inputTeam").val() == null)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Please select the team</div>');
+                return;
+            }
+            if ($("#inputRole").val() == null)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Please select the role</div>');
+                return;
             }
             var email = $("#inputEmail").val().trim();
-
             var name = $("#inputName").val().trim();
+            $("#inputEmail").val(email);
             $("#inputName").val(name);
             if (name.length == 0)
             {
                 event.preventDefault();
                 $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name can not be empty</div>');
-                return ;
+                return;
             }
+            else
+            {
+                if (originalName && originalName.length != 0)
+                {
 
-            $("#inputEmail").val(email);
+                    if (originalName != name)
+                    {
+                        event.preventDefault();
+                        $.getJSON("api/users/byName/" + name, function(data)
+                        {
+                            if (data.length != 0)
+                            {
+                                console.log(data);
+                                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name already exists in the database</div>');
+                                return;
+                            }
+                            else
+                            {
+                                $("#modalform").submit();
+                                return;
+                            }
+                        });
+                    }
+                }
+
+            }
         });
         $('#mytable2').DataTable();
         var role = $('#role').val().trim();
@@ -82,7 +119,7 @@
             var listItems;
             listItems += "<option value='" + team + "'>" + team + "</option>";
             $("#inputTeam").html(listItems);
-          //  $("#inputTeam").prop("disabled", true);
+            //  $("#inputTeam").prop("disabled", true);
         }
         else
         //super admin
@@ -114,13 +151,16 @@
         });
 
     });
+    var originalName;
     $(function()
     {
         $('button#Edit').on('click', function()
         {
+
             $('#message').html('');
             var id = $(event.target).closest('tr').find('#id').text().trim();
             var username = $(event.target).closest('tr').find('#username').text().trim();
+            originalName = username;
             var password = $(event.target).closest('tr').find('#password').text().trim();
             var teamid = $(event.target).closest('tr').find("#teamid").text().trim();
             var emailaddress = $(event.target).closest('tr').find("#emailaddress").text().trim();
@@ -184,9 +224,9 @@
                         type: 'DELETE',
                         success: function(result)
                         {
-                             deleteCount--;
-                             if (deleteCount == 0)
-                                 location.reload();
+                            deleteCount--;
+                            if (deleteCount == 0)
+                                location.reload();
                         }
                     });
                 })

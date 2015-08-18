@@ -25,6 +25,7 @@
     <!-- DataTables -->
     <script type="text/javascript" charset="utf8" src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
     <script>
+    var originalName;
     $(document).ready(function()
     {
         $('#mytable2').DataTable();
@@ -76,14 +77,58 @@
         });
         $('#saveSubmit').on('click', function()
         {
+            $("#message").html();
             var name = $("#inputName").val().trim();
             $("#inputName").val(name);
+            if ($("#SelectModel").val() == null)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Please select the model</div>');
+                return;
+            }
+            if ($("#SelectType").val() == null)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Please select the type</div>');
+                return;
+            }
+            if ($("#SelectManufacturer").val() == null)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Please select the manufacturer</div>');
+                return;
+            }
+            if ($("#SelectSize").val() == null)
+            {
+                event.preventDefault();
+                $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Please select the size</div>');
+                return;
+            }
             if (name.length == 0)
             {
                 event.preventDefault();
                 $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name can not be empty</div>');
             }
-
+            else
+            {
+                if (originalName != name)
+                {
+                    event.preventDefault();
+                    $.getJSON("api/templates/byName/" + name, function(data)
+                    {
+                        if (data.length != 0)
+                        {
+                            console.log(data);
+                            $('#message').html('<div class="alert alert-warning fade in"><button type="button" class="close close-alert" data-dismiss="alert" aria-hidden="true">×</button>Name already exists in the database</div>');
+                            return;
+                        }
+                        else
+                        {
+                            $("#modalform").submit();
+                        }
+                    });
+                }
+            }
         });
     });
     $(function()
@@ -97,18 +142,15 @@
             var manu = $(event.target).closest('tr').find('#manu').text().trim();
             var model = $(event.target).closest('tr').find('#model').text().trim();
             var size = $(event.target).closest('tr').find('#size').text().trim();
-            console.log(size);
+            originalName = username;
             $(".modal-title").text("Edit template");
             $("#modalform").attr("action", "template/update");
             $("#inputName").val(username);
             $("#SelectManu").val(manu);
             $("#SelectModel").val(model);
-            console.log($('#SelectSize').val());
             $("#SelectSize").val(size);
-            console.log($('#SelectSize').val());
             $("#SelectType").val(type);
             $('#inputId').val(id);
-            console.log($('#SelectSize').val());
         });
     });
     $(function()

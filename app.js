@@ -27,6 +27,7 @@ var test = require('./routes/test');
 var model = require('./routes/model');
 var size = require('./routes/size');
 var importpage = require('./routes/import');
+var checkstatus = require('./routes/check');
 var manufacturer = require('./routes/manufacturer');
 var app = express(); 
 
@@ -66,46 +67,60 @@ app.use('/model',model);
 app.use('/size',size);
 app.use('/manufacturer',manufacturer);
 app.use('/import',importpage);
+app.use('/check',checkstatus);
 
 //api of the location
 app.get('/api/locations',api.findAllLab);
+app.get('/api/locations/byName/:name',api.findLocationName);
 app.delete('/api/locations/:id',api.deleteLab);
 
 // //api of teams
 
 app.get('/api/teams',api.findAllTeams);
+app.get('/api/teams/byName/:name',api.findTeamName);
 app.get('/api/teams/:name',api.findTeamUsers);
 app.delete('/api/teams/:id',api.deleteTeam);
 
 //api of type
 app.get('/api/types',api.findAllTypes);
+app.get('/api/types/byName/:name',api.findTypeName);
 app.delete('/api/types/:id',api.deleteType);
 
 //api for deleting user
 app.get('/api/users/',api.findAllUsers);
 app.get('/api/users/:id',api.findOneUsers);
+app.get('/api/users/byName/:name',api.findUserName);
 app.delete('/api/users/:id',api.deleteUser);
 
 
 //api for deleting resource
 app.delete('/api/asset/:id',api.deleteResource);
 app.get('/api/serverId',api.selectServerId);
+
+
 app.get('/api/asset',api.selectResources);
+app.get('/api/asset/bystatus/:status',api.selectResourcesByStatus);
 app.get('/api/asset/:id',api.selectOneResources);
+app.get('/api/asset/byName/:name',api.findAssetName);
 app.get('/api/asset/byuser/:name',api.findAssetByUsers);
+app.get('/api/asset/:user/:status',api.findAssetByUserStatus);
 app.get('/api/asset/byteam/:team',api.findAssetByTeam);
+app.get('/api/asset/:team/:status',api.findAssetByTeamStatus);
+app.post('/api/asset/add/',api.addResource);
 app.put('/api/asset/:id',api.updateResource);
 
 app.put('/api/asset/update/:id',api.updateResourceBatch);
 
 //api for template operation
 app.get('/api/templates',api.findAllTemplate);
-app.get('/api/templates/:name',api.findOneTemplate);
+app.get('/api/templates/:name',api.findTemplateName);
+app.get('/api/templates/byName/:name',api.findTemplateName);
 app.delete('api/templates/:id',api.deleteTemplate);
 
 
 //api of the labs
 app.get('/api/position',api.findAllPosition);
+app.get('/api/position/byName/:name',api.findPositionName);
 app.delete('/api/position/:id',api.deletePosition);
 //api for all servers
 app.get('/api/servers',api.findAllServer);
@@ -128,14 +143,17 @@ app.post('/api/transfer/',api.transfer);
 
 //api of the model
 app.get('/api/model',api.findAllModel);
+app.get('/api/model/byName/:name',api.findModelName);
 app.delete('/api/model/:id',api.deleteModel);
 
 //api of the size
 app.get('/api/size',api.findAllSize);
+app.get('/api/size/byName/:name',api.findSizeName);
 app.delete('/api/size/:id',api.deleteSize);
 
 //api of the manu
 app.get('/api/manu',api.findAllManu);
+app.get('/api/manu/byName/:name',api.findManuName);
 app.delete('/api/manu/:id',api.deleteManu);
 
 
